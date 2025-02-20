@@ -1,3 +1,11 @@
 from django.contrib import admin
 
-# Register your models here.
+from levelupapp.models import Game, Score
+
+@admin.register(Game)
+class GameAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Score)
+class ScoreAdmin(admin.ModelAdmin):
+    pass
