@@ -7,11 +7,13 @@ from rest_framework.decorators import api_view
 
 
 # Create your views here.
-class ScoreView(APIView):
-    def post(self, request, format=None):
-        serializer = ScoreSerializer(data=request.data)
 
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+@csrf_exempt
+@api_view(["POST"])
+def save_score(request, format=None):
+    serializer = ScoreSerializer(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

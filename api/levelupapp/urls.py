@@ -1,6 +1,6 @@
 from django.urls import path
-from levelupapp.views import ScoreView
+from levelupapp.views import save_score
 
 urlpatterns = [
-    path("save-score/", ScoreView.post, name="save-score"),
+    path("save-score/", save_score, name="save-score"),
 ]
