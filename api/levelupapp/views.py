@@ -1,14 +1,14 @@
 from rest_framework import status
-from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.contrib.auth.models import User
-from .models import Score, Game
+from rest_framework.response import Response
 from .serializers import ScoreSerializer
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
+
 
 # Create your views here.
-
-class Score(APIView):
-    def post(request):
+class ScoreView(APIView):
+    def post(self, request, format=None):
         serializer = ScoreSerializer(data=request.data)
 
         if serializer.is_valid():
