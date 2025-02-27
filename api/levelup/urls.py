@@ -17,6 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from levelupapp import urls as levelupapp_urls
+from django.urls import path, include
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from levelupapp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),

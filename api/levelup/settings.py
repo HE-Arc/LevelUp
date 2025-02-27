@@ -40,13 +40,18 @@ INSTALLED_APPS = [
     'rest_framework',
     'levelupapp',
     'corsheaders',
+    'rest_framework_simplejwt',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173'
-]
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
 
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
+CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
