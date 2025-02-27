@@ -6,9 +6,4 @@ from .models import Game, Score
 class ScoreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Score
-        fields = [
-            "url",
-            "user",
-            "game",
-            "points",
-        ]
+        fields = "__all__"
