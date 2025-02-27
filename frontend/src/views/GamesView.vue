@@ -14,7 +14,8 @@ onMounted(fetchGames)
 
 <template>
   <h1>Games</h1>
-  <ul>
+  <p v-if="games.length === 0">No games to display</p>
+  <ul v-else>
     <li v-for="game in games">
       {{ game.name }}
 
