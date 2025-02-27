@@ -8,7 +8,7 @@ class Game(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class ScoreView(models.Model):
+class Score(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
     points = models.IntegerField(default=0)

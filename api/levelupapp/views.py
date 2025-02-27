@@ -66,10 +66,9 @@ def register(request):
 # Create your views here.
 
 
-@csrf_exempt
 @api_view(["POST"])
-def save_score(request, format=None):
-    serializer = ScoreSerializer(data=request.data)
+def save_score(request):
+    serializer = ScoreSerializer(data=request.data, context={"request": request})
 
     if serializer.is_valid():
         serializer.save()
