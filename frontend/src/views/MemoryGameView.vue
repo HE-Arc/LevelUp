@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useAuthStore } from '../services/auth'
+import { useRouter } from 'vue-router'
 import { getCSRFToken } from '../services/auth'
 
 const icons = ['🍎', '🍌', '🍇', '🍉', '🍍', '🥑', '🥕', '🌽', '🎃']
@@ -13,10 +14,15 @@ const gain = 150
 const loss = 50
 let nbFlipped = 0
 const authStore = useAuthStore()
+const router = useRouter()
 
 onMounted(async () => {
   await authStore.fetchUser()
   console.log('User loaded:', authStore.user)
+  if (!authStore.user) {
+    router.push('/login')
+    return
+  }
   score = 0
   nbFlipped = 0
   generateCards()

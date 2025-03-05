@@ -57,9 +57,13 @@ def user(request):
 def register(request):
     data = json.loads(request.body.decode("utf-8"))
     form = CreateUserForm(data)
+
     if form.is_valid():
-        form.save()
-        return JsonResponse({"success": "User registered successfully"}, status=201)
+        try:
+            form.save()
+            return JsonResponse({"success": "User registered successfully"}, status=201)
+        except IntegrityError:
+            return JsonResponse({"error": "Cet email est déjà utilisé."}, status=400)
     else:
         errors = form.errors.as_json()
         return JsonResponse({"error": errors}, status=400)

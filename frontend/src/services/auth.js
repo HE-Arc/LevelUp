@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { API_BASE_URL } from '@/config'
 
 export const useAuthStore = defineStore('auth', {
   state: () => {
@@ -12,14 +13,14 @@ export const useAuthStore = defineStore('auth', {
   },
   actions: {
     async setCsrfToken() {
-      await fetch('http://localhost:8000/api/set-csrf-token', {
+      await fetch(`${API_BASE_URL}/set-csrf-token`, {
         method: 'GET',
         credentials: 'include',
       })
     },
 
     async login(email, password, router = null) {
-      const response = await fetch('http://localhost:8000/api/login', {
+      const response = await fetch(`${API_BASE_URL}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -49,7 +50,7 @@ export const useAuthStore = defineStore('auth', {
 
     async logout(router = null) {
       try {
-        const response = await fetch('http://localhost:8000/api/logout', {
+        const response = await fetch(`${API_BASE_URL}/logout`, {
           method: 'POST',
           headers: {
             'X-CSRFToken': getCSRFToken(),
@@ -74,7 +75,7 @@ export const useAuthStore = defineStore('auth', {
 
     async fetchUser() {
       try {
-        const response = await fetch('http://localhost:8000/api/user', {
+        const response = await fetch(`${API_BASE_URL}/user`, {
           credentials: 'include',
           headers: {
             'Content-Type': 'application/json',

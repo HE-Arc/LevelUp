@@ -19,6 +19,7 @@
 
 <script>
 import { getCSRFToken } from '../services/auth'
+import { API_BASE_URL } from '@/config'
 
 export default {
   data() {
@@ -32,7 +33,7 @@ export default {
   methods: {
     async register() {
       try {
-        const response = await fetch('http://localhost:8000/api/register', {
+        const response = await fetch(`${API_BASE_URL}/register`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -51,7 +52,7 @@ export default {
             this.$router.push('/login')
           }, 1000)
         } else {
-          this.error = data.error || 'Registration failed'
+          this.error = JSON.parse(data.error).email[0].message || 'Registration failed'
         }
       } catch (err) {
         this.error = 'An error occurred during registration: ' + err
