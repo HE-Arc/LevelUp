@@ -1,15 +1,28 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useAuthStore } from '../services/auth'
+import { useRouter } from 'vue-router'
 import axios from 'axios'
 
 const games = ref([])
+
+const authStore = useAuthStore()
+const router = useRouter()
 
 const fetchGames = async () => {
   const res = await axios.get('http://localhost:8000/api/games/')
   games.value = res.data
 }
 
-onMounted(fetchGames)
+onMounted(async () => {
+  await authStore.fetchUser()
+  console.log('User loaded:', authStore.user)
+  if (!authStore.user) {
+    router.push('/login')
+    return
+  }
+  fetchGames()}
+)
 </script>
 
 <template>
