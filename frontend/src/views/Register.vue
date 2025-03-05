@@ -51,7 +51,7 @@ export default {
             this.$router.push('/login')
           }, 1000)
         } else {
-          this.error = data.error || 'Registration failed'
+          this.error = JSON.parse(data.error).email[0].message || 'Registration failed'
         }
       } catch (err) {
         this.error = 'An error occurred during registration: ' + err
