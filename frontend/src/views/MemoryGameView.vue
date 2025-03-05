@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useAuthStore } from '../services/auth'
+import { getCSRFToken } from '../services/auth'
 
 const icons = ['🍎', '🍌', '🍇', '🍉', '🍍', '🥑', '🥕', '🌽', '🎃']
 const cards = ref([])
@@ -67,11 +68,34 @@ const resetTurn = () => {
   lockBoard.value = false
 }
 
-const gameEnd = () => {
-  console.log('END ! with score ' + score)
-  console.log(authStore.user?.id)
-  // save the score
-}
+const gameEnd = async () => {
+  console.log('END ! with score ' + score);
+
+  try {
+    const response = await fetch("http://localhost:8000/api/save_score", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        'X-CSRFToken': getCSRFToken()
+      },
+      body: JSON.stringify({
+        user: 1,
+        game: 1,
+        points: score,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Erreur lors de l'enregistrement du score");
+    }
+
+    const data = await response.json();
+    console.log("Score enregistré avec succès :", data);
+  } catch (error) {
+    console.error("Erreur lors de l'envoi de la requête :", error);
+  }
+};
+
 
 onMounted(() => {
   score = 0
