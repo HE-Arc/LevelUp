@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useAuthStore } from '../services/auth'
 import { useRouter } from 'vue-router'
 import { getCSRFToken } from '../services/auth'
+import { API_BASE_URL } from '@/config'
 
 const icons = ['🍎', '🍌', '🍇', '🍉', '🍍', '🥑', '🥕', '🌽', '🎃']
 const cards = ref([])
@@ -78,7 +79,7 @@ const gameEnd = async () => {
   console.log('END ! with score ' + score);
 
   try {
-    const response = await fetch("http://localhost:8000/api/save_score", {
+    const response = await fetch(`${API_BASE_URL}/save_score`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
