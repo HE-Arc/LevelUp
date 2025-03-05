@@ -2,25 +2,21 @@ import json
 
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
-from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect, csrf_exempt
-import json
-
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_http_methods
+
 from rest_framework import viewsets
-
-from .models import Game
-from .serializers import GameSerializer
-from django.contrib.auth import authenticate, login, logout
-from .forms import CreateUserForm
-
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import ScoreSerializer
+
+from .serializers import ScoreSerializer, GameSerializer
+from .forms import CreateUserForm
+from .models import Game
 
 
 @ensure_csrf_cookie
-@require_http_methods(["GET"])
+@require_http_methods(['GET'])
 def set_csrf_token(request):
     """
     We set the CSRF cookie on the frontend.
@@ -28,7 +24,7 @@ def set_csrf_token(request):
     return JsonResponse({"message": "CSRF cookie set"})
 
 
-@require_http_methods(["POST"])
+@require_http_methods(['POST'])
 def login_view(request):
     try:
         data = json.loads(request.body.decode("utf-8"))
@@ -50,14 +46,14 @@ def logout_view(request):
     return JsonResponse({"message": "Logged out"})
 
 
-@require_http_methods(["GET"])
+@require_http_methods(['GET'])
 def user(request):
     if request.user.is_authenticated:
         return JsonResponse({"username": request.user.username, "email": request.user.email})
     return JsonResponse({"message": "Not logged in"}, status=401)
 
 
-@require_http_methods(["POST"])
+@require_http_methods(['POST'])
 def register(request):
     data = json.loads(request.body.decode("utf-8"))
     form = CreateUserForm(data)
@@ -69,7 +65,7 @@ def register(request):
         return JsonResponse({"error": errors}, status=400)
 
 
-@api_view(["POST"])
+@api_view(['POST'])
 def save_score(request):
     serializer = ScoreSerializer(data=request.data, context={"request": request})
     if serializer.is_valid():
