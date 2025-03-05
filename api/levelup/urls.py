@@ -17,6 +17,8 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+from levelupapp import urls as levelupapp_urls
+from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from levelupapp import views
 
@@ -28,4 +30,5 @@ urlpatterns = [
     path('api/user', views.user, name='user'),
     path('api/register', views.register, name='register'),
     path("levelupapp/", include("levelupapp.urls")),
+    path('api/', include(levelupapp_urls)),
 ]

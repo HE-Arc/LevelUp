@@ -1,9 +1,15 @@
-from django.shortcuts import render
+import json
+
+from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect, csrf_exempt
 import json
 
 from django.views.decorators.http import require_http_methods
+from rest_framework import viewsets
+
+from .models import Game
+from .serializers import GameSerializer
 from django.contrib.auth import authenticate, login, logout
 from .forms import CreateUserForm
 
@@ -63,14 +69,15 @@ def register(request):
         return JsonResponse({"error": errors}, status=400)
 
 
-# Create your views here.
-
-
 @api_view(["POST"])
 def save_score(request):
     serializer = ScoreSerializer(data=request.data, context={"request": request})
-
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GameViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Game.objects.all()
+    serializer_class = GameSerializer
