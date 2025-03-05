@@ -19,6 +19,7 @@
 
 <script>
 import { getCSRFToken } from '../services/auth'
+import { API_BASE_URL } from '@/config'
 
 export default {
   data() {
@@ -32,7 +33,7 @@ export default {
   methods: {
     async register() {
       try {
-        const response = await fetch('http://localhost:8000/api/register', {
+        const response = await fetch(`${API_BASE_URL}/register`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

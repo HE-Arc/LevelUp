@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useAuthStore } from '../services/auth'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
+import { API_BASE_URL } from '@/config'
 
 const games = ref([])
 
@@ -10,7 +11,7 @@ const authStore = useAuthStore()
 const router = useRouter()
 
 const fetchGames = async () => {
-  const res = await axios.get('http://localhost:8000/api/games/')
+  const res = await axios.get(`${API_BASE_URL}/games/`)
   games.value = res.data
 }
 
