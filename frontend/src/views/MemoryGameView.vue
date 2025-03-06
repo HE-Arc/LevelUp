@@ -2,7 +2,6 @@
 import { ref, onMounted } from 'vue'
 import { useAuthStore } from '../services/auth'
 import { useRouter } from 'vue-router'
-import { getCSRFToken } from '../services/auth'
 import { GameId, saveScore } from '@/utils/requests.js'
 
 const icons = ['φ', 'Ψ', 'λ', 'π', 'ξ', 'Ω', 'Σ', 'θ', 'Δ']
@@ -111,6 +110,7 @@ onMounted(() => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  min-height: 700px;
   font-family: Arial, sans-serif;
 }
 
