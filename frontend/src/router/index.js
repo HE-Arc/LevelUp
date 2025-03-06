@@ -3,6 +3,8 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import MemoryGameView from '@/views/MemoryGameView.vue'
+import ClicSpeedView from '@/views/ClickSpeedView.vue'
+import ClickSpeedView from '@/views/ClickSpeedView.vue'
 
 const routes = [
   {
@@ -29,6 +31,11 @@ const routes = [
     path: '/games/memory',
     name: 'memory',
     component: MemoryGameView,
+  },
+  {
+    path: '/games/clickspeed',
+    name: 'clickspeed',
+    component: ClickSpeedView,
   },
 ]
 

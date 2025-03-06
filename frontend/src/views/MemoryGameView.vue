@@ -3,8 +3,9 @@ import { ref, onMounted } from 'vue'
 import { useAuthStore } from '../services/auth'
 import { useRouter } from 'vue-router'
 import { getCSRFToken } from '../services/auth'
+import { GameId, saveScore } from '@/utils/requests.js'
 
-const icons = ['🍎', '🍌', '🍇', '🍉', '🍍', '🥑', '🥕', '🌽', '🎃']
+const icons = ['φ', 'Ψ', 'λ', 'π', 'ξ', 'Ω', 'Σ', 'θ', 'Δ']
 const cards = ref([])
 const flippedCards = ref([])
 const matchedCards = ref([])
@@ -75,31 +76,7 @@ const resetTurn = () => {
 }
 
 const gameEnd = async () => {
-  console.log('END ! with score ' + score);
-
-  try {
-    const response = await fetch("http://localhost:8000/api/save_score", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        'X-CSRFToken': getCSRFToken()
-      },
-      body: JSON.stringify({
-        user: 1,
-        game: 1,
-        points: score,
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error("Erreur lors de l'enregistrement du score");
-    }
-
-    const data = await response.json();
-    console.log("Score enregistré avec succès :", data);
-  } catch (error) {
-    console.error("Erreur lors de l'envoi de la requête :", error);
-  }
+  await saveScore(1, GameId.MEMORY, score);
 };
 
 
@@ -134,27 +111,28 @@ onMounted(() => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 700px;
   font-family: Arial, sans-serif;
 }
 
 h1 {
   font-size: 2rem;
   margin-bottom: 1rem;
+  color: #007acc;
 }
 
 .grid {
   display: grid;
   gap: 10px;
-  margin: auto;
+  margin-inline: auto;
+  margin-top: 1rem;
   max-width: 90vw;
 }
 
 .card {
-  width: clamp(60px, 10vw, 120px);
-  height: clamp(60px, 10vw, 120px);
+  width: clamp(80px, 10vw, 120px);
+  height: clamp(80px, 10vw, 120px);
   font-size: clamp(1.5rem, 3vw, 3rem);
-  background: lightskyblue;
+  background: #007acc;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -162,6 +140,7 @@ h1 {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: transform 0.3s, font-size 0.3s;
+  color: white;
 }
 
 @media (max-width: 600px) {
@@ -179,5 +158,6 @@ h1 {
 
 .card.flipped {
   transform: rotateY(180deg);
+  background-color: #005f99;
 }
 </style>
