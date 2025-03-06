@@ -172,3 +172,5 @@ cython_debug/
 
 #vsCode
 .vscode/*
+
+api/levelup/settings.py
