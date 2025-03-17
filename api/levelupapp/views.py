@@ -1,6 +1,8 @@
 import json
 
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.db import IntegrityError
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_http_methods
@@ -28,14 +30,14 @@ def set_csrf_token(request):
 def login_view(request):
     try:
         data = json.loads(request.body.decode("utf-8"))
-        email = data["email"]
+        identifier = data.get("email")  # Peut être un email ou un username
         password = data["password"]
     except json.JSONDecodeError:
         return JsonResponse({"success": False, "message": "Invalid JSON"}, status=400)
 
-    user = authenticate(request, username=email, password=password)
+    user = User.objects.filter(email=identifier).first() or User.objects.filter(username=identifier).first()
 
-    if user:
+    if user and user.check_password(password):
         login(request, user)
         return JsonResponse({"success": True})
     return JsonResponse({"success": False, "message": "Invalid credentials"}, status=401)
@@ -63,7 +65,7 @@ def register(request):
             form.save()
             return JsonResponse({"success": "User registered successfully"}, status=201)
         except IntegrityError:
-            return JsonResponse({"error": "Cet email est déjà utilisé."}, status=400)
+            return JsonResponse({"error": "Cet email ou nom d'utilisateur est déjà utilisé."}, status=400)
     else:
         errors = form.errors.as_json()
         return JsonResponse({"error": errors}, status=400)

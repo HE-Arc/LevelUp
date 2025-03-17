@@ -5,6 +5,7 @@ import Register from '../views/Register.vue'
 import MemoryGameView from '@/views/MemoryGameView.vue'
 import ClicSpeedView from '@/views/ClickSpeedView.vue'
 import ClickSpeedView from '@/views/ClickSpeedView.vue'
+import ReflexGameView from '@/views/ReflexGameView.vue'
 
 const routes = [
   {
@@ -36,6 +37,11 @@ const routes = [
     path: '/games/clickspeed',
     name: 'clickspeed',
     component: ClickSpeedView,
+  },
+  {
+    path: '/games/reflex',
+    name: 'reflex',
+    component: ReflexGameView,
   },
 ]
 

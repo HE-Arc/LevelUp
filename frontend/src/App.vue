@@ -24,6 +24,7 @@ const toggleMenu = () => {
           <RouterLink to="/games" @click="toggleMenu">Games</RouterLink>
           <RouterLink to="/games/memory" @click="toggleMenu">Memory</RouterLink>
           <RouterLink to="/games/clickspeed" @click="toggleMenu">ClickSpeed</RouterLink>
+          <RouterLink to="/games/reflex" @click="toggleMenu">Reflex</RouterLink>
         </nav>
       </div>
     </header>
