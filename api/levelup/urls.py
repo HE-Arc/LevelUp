@@ -30,4 +30,5 @@ urlpatterns = [
     path("api/user", views.user, name="user"),
     path("api/register", views.register, name="register"),
     path("api/", include(levelupapp_urls)),
+    path('api/leaderboard', views.leaderboard, name='leaderboard'),
 ]

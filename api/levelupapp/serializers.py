@@ -3,9 +3,11 @@ from levelupapp.models import Game, Score
 
 
 class ScoreSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source="user.username", read_only=True)
+
     class Meta:
         model = Score
-        fields = "__all__"
+        fields = ['id', 'game', 'user', 'username', 'points']
 
 
 class GameSerializer(serializers.HyperlinkedModelSerializer):

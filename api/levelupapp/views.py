@@ -12,7 +12,7 @@ from rest_framework.response import Response
 
 from .serializers import ScoreSerializer, GameSerializer
 from .forms import CreateUserForm
-from .models import Game
+from .models import Game, Score
 
 
 @ensure_csrf_cookie
@@ -49,7 +49,7 @@ def logout_view(request):
 @require_http_methods(['GET'])
 def user(request):
     if request.user.is_authenticated:
-        return JsonResponse({"username": request.user.username, "email": request.user.email})
+        return JsonResponse({"id": request.user.id, "username": request.user.username, "email": request.user.email})
     return JsonResponse({"message": "Not logged in"}, status=401)
 
 
@@ -79,6 +79,26 @@ def save_score(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['GET'])
+def leaderboard(request):
+    game_id = request.GET.get("game_id")
+
+    try:
+        game = Game.objects.get(id=game_id)
+    except Game.DoesNotExist:
+        return Response({"error": "Game not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    top_scores = game.get_leaderboard()
+    serializer = ScoreSerializer(top_scores, many=True)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 class GameViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
+
+
+class ScoreViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Score.objects.all()
+    serializer_class = ScoreSerializer

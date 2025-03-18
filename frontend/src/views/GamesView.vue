@@ -4,6 +4,7 @@ import { useAuthStore } from '../services/auth'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 import { API_BASE_URL } from '@/config'
+import { RouterLink } from 'vue-router'
 
 const games = ref([])
 
@@ -22,8 +23,8 @@ onMounted(async () => {
     router.push('/login')
     return
   }
-  fetchGames()}
-)
+  fetchGames()
+})
 </script>
 
 <template>
@@ -32,11 +33,16 @@ onMounted(async () => {
     <p v-if="games.length === 0">No games to display</p>
     <ul v-else>
       <li v-for="game in games">
-        {{ game.name }}
+        <h2>
+          {{ game.name }}
+        </h2>
         <div class="button-group">
-        <button @click="console.log('play: ' + game.id)">Play</button>
-
-        <button @click="console.log('leaderboard: ' + game.id)">Leaderboard</button>
+          <RouterLink :to="'/games/' + game.name.toLowerCase()">
+            <button @click="console.log('play: ' + game.id)">Play</button>
+          </RouterLink>
+          <RouterLink :to="'/games/leaderboard/' + game.name.toLowerCase()">
+            <button @click="console.log('leaderboard: ' + game.id)">Leaderboard</button>
+          </RouterLink>
         </div>
       </li>
     </ul>
@@ -44,14 +50,13 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-
 .container {
   max-width: 800px;
   margin-inline: auto;
   text-align: center;
   border-radius: 10px;
   background: white;
-  padding-inline: 20px;
+  padding: 20px;
 }
 
 h1 {
@@ -65,10 +70,11 @@ ul {
 }
 
 li {
-  border: 1px solid #005f99;
+  border: 3px solid #007acc;
   font-size: 1.5rem;
-  color: #007acc;
-  padding: 20px;
+  color: #005f99;
+  font-weight: bold;
+  padding: 10px 20px 30px 20px;
   margin: 1.2rem 0;
   border-radius: 8px;
   display: flex;
@@ -77,18 +83,17 @@ li {
   position: relative;
 }
 
-li > span {
-  font-size: 2rem;
+li > h2 {
+  font-size: 1.6rem;
   font-weight: bold;
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.8rem;
 }
 
 .button-group {
   display: flex;
   flex-direction: row;
   gap: 10px;
-  padding-top: 1rem;
 }
 
 button {
@@ -105,6 +110,4 @@ button {
 button:hover {
   background: #005f99;
 }
-
-
 </style>

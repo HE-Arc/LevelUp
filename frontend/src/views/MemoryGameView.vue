@@ -75,9 +75,8 @@ const resetTurn = () => {
 }
 
 const gameEnd = async () => {
-  await saveScore(1, GameId.MEMORY, score);
-};
-
+  await saveScore(GameId.MEMORY, score, authStore.user.id)
+}
 
 onMounted(() => {
   score = 0
@@ -110,21 +109,25 @@ onMounted(() => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 700px;
   font-family: Arial, sans-serif;
+  padding: 20px;
 }
 
 h1 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
   color: #007acc;
+}
+
+h2 {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.6rem;
 }
 
 .grid {
   display: grid;
   gap: 10px;
   margin-inline: auto;
-  margin-top: 1rem;
+  margin-top: 0.8rem;
   max-width: 90vw;
 }
 
@@ -139,7 +142,9 @@ h1 {
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  transition: transform 0.3s, font-size 0.3s;
+  transition:
+    transform 0.3s,
+    font-size 0.3s;
   color: white;
 }
 

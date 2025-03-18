@@ -3,8 +3,9 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import MemoryGameView from '@/views/MemoryGameView.vue'
-import ClicSpeedView from '@/views/ClickSpeedView.vue'
 import ClickSpeedView from '@/views/ClickSpeedView.vue'
+import MemoryLeaderBoardView from '@/views/MemoryLeaderBoardView.vue'
+import ClickSpeedLeaderboard from '@/views/ClickSpeedLeaderboard.vue'
 
 const routes = [
   {
@@ -33,9 +34,19 @@ const routes = [
     component: MemoryGameView,
   },
   {
+    path: '/games/leaderboard/memory',
+    name: 'memory-leaderboard',
+    component: MemoryLeaderBoardView,
+  },
+  {
     path: '/games/clickspeed',
     name: 'clickspeed',
     component: ClickSpeedView,
+  },
+  {
+    path: '/games/leaderboard/clickspeed',
+    name: 'clickspeed-leaderboard',
+    component: ClickSpeedLeaderboard,
   },
 ]
 

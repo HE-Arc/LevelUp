@@ -51,6 +51,7 @@ export default {
   text-align: center;
   border-radius: 10px;
   font-size: 1.1rem;
+  padding: 20px;
 }
 
 h1 {

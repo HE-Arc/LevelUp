@@ -139,3 +139,7 @@ export function getCSRFToken() {
   }
   return cookieValue
 }
+
+export function getAuthStore() {
+  return useAuthStore()
+}

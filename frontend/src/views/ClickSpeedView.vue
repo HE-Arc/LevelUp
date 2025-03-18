@@ -1,6 +1,8 @@
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { GameId, saveScore } from '@/utils/requests.js'
+import { useAuthStore } from '@/services/auth.js'
+import { useRouter } from 'vue-router'
 
 const timeLeft = ref(10)
 const nbClick = ref(0)
@@ -9,6 +11,17 @@ let timer = null
 
 const startButtonShow = ref(true)
 const timeToShowStartButton = ref(13)
+
+const authStore = useAuthStore()
+const router = useRouter()
+
+onMounted(async () => {
+  await authStore.fetchUser()
+  console.log('User loaded:', authStore.user)
+  if (!authStore.user) {
+    router.push('/login')
+  }
+})
 
 const startGame = () => {
   nbClick.value = 0
@@ -21,7 +34,7 @@ const startGame = () => {
     timeLeft.value--
     if (timeLeft.value === 0) {
       gameRunning.value = false
-      gameEnd();
+      gameEnd()
     }
     if (timeToShowStartButton.value > 0) {
       timeToShowStartButton.value--
@@ -39,7 +52,7 @@ const incrementScore = () => {
 }
 
 const gameEnd = async () => {
-  await saveScore(1, GameId.CLICKSPEED, nbClick.value)
+  await saveScore(GameId.CLICKSPEED, nbClick.value, authStore.user.id)
 }
 </script>
 
@@ -52,7 +65,6 @@ const gameEnd = async () => {
     <button class="counter" v-if="gameRunning" @click="incrementScore">{{ nbClick }}</button>
 
     <p v-if="!gameRunning && nbClick > 0">Final score : {{ nbClick }} clicks</p>
-
 
     <button class="start" v-if="!gameRunning && startButtonShow" @click="startGame">Start</button>
   </div>
