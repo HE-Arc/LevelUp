@@ -33,9 +33,9 @@ export async function saveScore(gameName, score, userId) {
   }
 }
 
-export async function getLeaderboard(gameId) {
+export async function getLeaderboard(gameName) {
   try {
-    const response = await fetch(`${API_BASE_URL}/leaderboard?game_id=${gameId}`, {
+    const response = await fetch(`${API_BASE_URL}/leaderboard?game_name=${gameName}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

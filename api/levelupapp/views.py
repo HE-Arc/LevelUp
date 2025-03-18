@@ -84,10 +84,10 @@ def save_score(request):
 
 @api_view(['GET'])
 def leaderboard(request):
-    game_id = request.GET.get("game_id")
+    game_name = request.GET.get("game_name")
 
     try:
-        game = Game.objects.get(id=game_id)
+        game = Game.objects.get(name=game_name)
     except Game.DoesNotExist:
         return Response({"error": "Game not found"}, status=status.HTTP_404_NOT_FOUND)
 
