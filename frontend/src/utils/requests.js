@@ -1,13 +1,13 @@
 import { getCSRFToken } from '@/services/auth.js'
 import { API_BASE_URL } from '@/config.js'
 
-export const GameId = {
-  MEMORY: 1,
-  CLICKSPEED: 2,
-  REFLEX: 3,
+export const GameName = {
+  MEMORY: "Memory",
+  CLICKSPEED: "ClickSpeed",
+  REFLEX: "Reflex",
 }
 
-export async function saveScore(gameId, score, userId) {
+export async function saveScore(gameName, score, userId) {
   try {
     const response = await fetch(API_BASE_URL + '/save_score', {
       method: 'POST',
@@ -17,7 +17,7 @@ export async function saveScore(gameId, score, userId) {
       },
       body: JSON.stringify({
         user: userId,
-        game: gameId,
+        game: gameName,
         points: score,
       }),
     })

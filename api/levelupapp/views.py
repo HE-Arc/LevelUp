@@ -73,8 +73,9 @@ def register(request):
 
 @api_view(['POST'])
 def save_score(request):
-    serializer = ScoreSerializer(data=request.data, context={"request": request})
-    print("test")
+    data = request.data
+    data['game'] = Game.objects.get(name=request.data['game']).id
+    serializer = ScoreSerializer(data=data, context={"request": request})
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
