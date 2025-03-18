@@ -6,6 +6,8 @@ import MemoryGameView from '@/views/MemoryGameView.vue'
 import ClickSpeedView from '@/views/ClickSpeedView.vue'
 import MemoryLeaderBoardView from '@/views/MemoryLeaderBoardView.vue'
 import ClickSpeedLeaderboard from '@/views/ClickSpeedLeaderboard.vue'
+import ReflexGameView from '@/views/ReflexGameView.vue'
+import ReflexLeaderboard from '@/views/ReflexLeaderboard.vue'
 
 const routes = [
   {
@@ -47,6 +49,16 @@ const routes = [
     path: '/games/leaderboard/clickspeed',
     name: 'clickspeed-leaderboard',
     component: ClickSpeedLeaderboard,
+  },
+  {
+    path: '/games/reflex',
+    name: 'reflex',
+    component: ReflexGameView,
+  },
+  {
+    path: '/games/leaderboard/reflex',
+    name: 'reflex-leaderboard',
+    component: ReflexLeaderboard,
   },
 ]
 

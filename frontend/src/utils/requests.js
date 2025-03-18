@@ -16,7 +16,7 @@ export async function saveScore(gameId, score, userId) {
         'X-CSRFToken': getCSRFToken(),
       },
       body: JSON.stringify({
-        user: userId, //authStore.user.id,
+        user: userId,
         game: gameId,
         points: score,
       }),
@@ -42,10 +42,10 @@ export async function getLeaderboard(gameId) {
       },
     })
 
-    const text = await response.text() // Lire la réponse brute
-    console.log('Raw response:', text) // Vérifier si c'est du JSON valide
+    const text = await response.text()
+    console.log('Raw response:', text)
 
-    const data = JSON.parse(text) // Parser le JSON
+    const data = JSON.parse(text)
     console.log('Leaderboard retrieved:', data)
     return data
   } catch (error) {
