@@ -22,7 +22,7 @@ class Game(models.Model):
 
         return top_scores
 
-    def get_user_score(self, user) -> int | None:
+    def get_user_rank(self, user) -> int | None:
         """Returns the position of the user in the leaderboard for this game, None if user not in leaderboard."""
         leaderboard = self.get_leaderboard()
         leaderboard_users = [score.user for score in leaderboard]
