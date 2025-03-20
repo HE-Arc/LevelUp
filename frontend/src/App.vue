@@ -22,6 +22,7 @@ const toggleMenu = () => {
           <RouterLink to="/" @click="toggleMenu">Home</RouterLink>
           <RouterLink to="/about" @click="toggleMenu">About</RouterLink>
           <RouterLink to="/games" @click="toggleMenu">Games</RouterLink>
+          <RouterLink to="/personal" @click="toggleMenu">My Score</RouterLink>
         </nav>
       </div>
     </header>
