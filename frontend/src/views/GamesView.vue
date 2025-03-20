@@ -8,6 +8,7 @@ import { RouterLink } from 'vue-router'
 import { getLeaderboard } from '@/utils/requests.js';
 
 const games = ref([])
+const games_loading = ref(true)
 const userRanks = ref({})
 
 const authStore = useAuthStore()
@@ -22,6 +23,7 @@ const fetchGames = async () => {
   if (authStore.user) {
     await fetchUserRanks()
   }
+  games_loading.value = false
 }
 
 const fetchUserRanks = async () => {
@@ -52,7 +54,8 @@ onMounted(async () => {
 <template>
   <div class="container">
     <h1>Games</h1>
-    <p v-if="games.length === 0">No games to display</p>
+    <p v-if="games_loading">Loading...</p>
+    <p v-else-if="games.length === 0">No games to display</p>
     <ul v-else>
       <li v-for="game in games">
         <h2>
