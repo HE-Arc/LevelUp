@@ -17,7 +17,6 @@ const router = useRouter()
 
 onMounted(async () => {
   await authStore.fetchUser()
-  console.log('User loaded:', authStore.user)
   if (!authStore.user) {
     router.push('/login')
   }
