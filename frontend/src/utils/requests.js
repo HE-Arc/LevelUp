@@ -27,7 +27,7 @@ export async function saveScore(gameName, score, userId) {
     }
 
     const data = await response.json()
-    console.log('Score successfully saved :', data)
+    //console.log('Score successfully saved :', data)
   } catch (error) {
     console.error('Error while sending request :', error)
   }
@@ -43,10 +43,10 @@ export async function getLeaderboard(gameName) {
     })
 
     const text = await response.text()
-    console.log('Raw response:', text)
+    //console.log('Raw response:', text)
 
     const data = JSON.parse(text)
-    console.log('Leaderboard retrieved:', data)
+    //console.log('Leaderboard retrieved:', data)
     return data
   } catch (error) {
     console.error('Error while fetching leaderboard:', error)

@@ -41,7 +41,7 @@ const fetchUserRanks = async () => {
 
 onMounted(async () => {
   await authStore.fetchUser()
-  console.log('User loaded:', authStore.user)
+  //console.log('User loaded:', authStore.user)
   if (!authStore.user) {
     router.push('/login')
     return
@@ -62,10 +62,10 @@ onMounted(async () => {
         <span v-if="userRanks[game.id]"> Rank : {{ userRanks[game.id] }}</span>
         <div class="button-group">
           <RouterLink :to="'/games/' + game.name.toLowerCase()">
-            <button @click="console.log('play: ' + game.id)">Play</button>
+            <button>Play</button>
           </RouterLink>
           <RouterLink :to="'/games/leaderboard/' + game.name.toLowerCase()">
-            <button @click="console.log('leaderboard: ' + game.id)">Leaderboard</button>
+            <button>Leaderboard</button>
           </RouterLink>
         </div>
       </li>
@@ -139,7 +139,7 @@ span {
   font-size: 1.2rem;
   font-weight: bold;
   color: #fff;
-  background-color: #f39c12;
+  background-color: #8dd35f;
   border-radius: 5px;
   padding: 5px 10px;
   margin-top: 10px;
