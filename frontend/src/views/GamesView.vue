@@ -5,15 +5,38 @@ import { useRouter } from 'vue-router'
 import axios from 'axios'
 import { API_BASE_URL } from '@/config'
 import { RouterLink } from 'vue-router'
+import { getLeaderboard } from '@/utils/requests.js';
 
 const games = ref([])
+const userRanks = ref({})
 
 const authStore = useAuthStore()
 const router = useRouter()
 
+
+
 const fetchGames = async () => {
   const res = await axios.get(`${API_BASE_URL}/games/`)
   games.value = res.data
+
+  if (authStore.user) {
+    await fetchUserRanks()
+  }
+}
+
+const fetchUserRanks = async () => {
+  const username = authStore.user.username
+  for (const game of games.value) {
+    try {
+      const leaderboard = await getLeaderboard(game.name);
+
+      const userEntry = leaderboard.find(player => player.username === username);
+      userRanks.value[game.id] = userEntry ? leaderboard.indexOf(userEntry) + 1 : '-';
+    } catch (error) {
+      console.error(`Error with ${game.name}:`, error)
+      userRanks.value[game.id] = 'N/A'
+    }
+  }
 }
 
 onMounted(async () => {
@@ -36,6 +59,7 @@ onMounted(async () => {
         <h2>
           {{ game.name }}
         </h2>
+        <span v-if="userRanks[game.id]"> Rank : {{ userRanks[game.id] }}</span>
         <div class="button-group">
           <RouterLink :to="'/games/' + game.name.toLowerCase()">
             <button @click="console.log('play: ' + game.id)">Play</button>
@@ -109,5 +133,18 @@ button {
 
 button:hover {
   background: #005f99;
+}
+
+span {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #f39c12;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  display: inline-block;
+  transition: background-color 0.3s ease;
 }
 </style>
