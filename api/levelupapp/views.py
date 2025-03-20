@@ -1,20 +1,19 @@
 import json
 
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_http_methods
-
-from rest_framework import viewsets
 from rest_framework import status
+from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .serializers import ScoreSerializer, GameSerializer
 from .forms import CreateUserForm
 from .models import Game, Score
+from .serializers import ScoreSerializer, GameSerializer
 
 
 @ensure_csrf_cookie
@@ -95,6 +94,90 @@ def leaderboard(request):
     serializer = ScoreSerializer(top_scores, many=True)
 
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def user_overall_score(request) -> Response(dict[str, int]):
+    """
+    Returns the average position in the leaderboard and total score for the user_id specified GET parameters.
+    """
+
+    user_id = request.GET.get("user_id")
+
+    try:
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    position_sum = 0
+    score_sum = 0
+    nb_games = 0
+
+    for game in Game.objects.all():
+        position = game.get_user_score(user)
+        if position is None:
+            continue
+
+        score = 100 / (position ** .5)
+
+        position_sum += position
+        score_sum += score
+
+        nb_games += 1
+
+    return Response(
+        {
+            "position": position_sum / nb_games if nb_games > 0 else 0,
+            "score": score_sum,
+        }
+        , status=status.HTTP_200_OK
+    )
+
+
+@api_view(['GET'])
+def user_full_score(request) -> Response(dict[str, dict[str, int | float]]):
+    """
+    Returns the position in the leaderboard and score for the user_id specified GET parameters, in each game and overall.
+    """
+
+    user_id = request.GET.get("user_id")
+
+    try:
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    positions = {}
+    position_sum = 0
+    scores = {}
+    score_sum = 0
+    nb_games = 0
+
+    for game in Game.objects.all():
+        position = game.get_user_score(user)
+        if position is None:
+            continue
+
+        score = 100 / (position ** .5)
+
+        positions[game.name] = position
+        scores[game.name] = score
+
+        position_sum += position
+        score_sum += score
+
+        nb_games += 1
+
+    positions['overall'] = position_sum / nb_games if nb_games > 0 else 0
+    scores['overall'] = score_sum
+
+    return Response(
+        {
+            "positions": positions,
+            "scores": scores,
+        }
+        , status=status.HTTP_200_OK
+    )
 
 
 class GameViewSet(viewsets.ReadOnlyModelViewSet):
