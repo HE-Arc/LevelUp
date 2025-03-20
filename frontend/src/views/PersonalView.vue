@@ -24,6 +24,7 @@ onMounted(async () => {
   fetchGames()
 })
 
+
 </script>
 
 <template>
@@ -31,7 +32,7 @@ onMounted(async () => {
     <h1>{{ authStore.user?.username }}</h1>
     <button>my scores</button>
     <button>Edit</button>
-    <button class="logout-btn">Logout</button>
+    <button class="logout-btn" @click="authStore.logout(this.$router)">Logout</button>
 
     <p v-if="games.length === 0">No games to display</p>
     <ul v-else>
