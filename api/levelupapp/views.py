@@ -97,11 +97,6 @@ def leaderboard(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-@api_view(["GET"])
-def personal_view(request):
-    return Response("Hello, this is my view!")
-
-
 class GameViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
