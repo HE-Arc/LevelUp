@@ -51,7 +51,7 @@ onMounted(async () => {
 .container {
   max-width: 600px;
   margin-inline: auto;
-  text-align: center;
+  text-align: left;
   border-radius: 10px;
   font-size: 1.1rem;
   padding: 20px;
@@ -59,42 +59,8 @@ onMounted(async () => {
 
 h1 {
   color: #007acc;
+  text-align: center;
 }
 
-.auth-box {
-  background: white;
-  padding: 15px;
-  border-radius: 8px;
-  margin-top: 20px;
-}
 
-.btn {
-  background: #007acc;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background 0.3s;
-  font-size: 1.3rem;
-  width: 80%;
-}
-
-.btn:hover {
-  background: #005f99;
-}
-
-.login-message {
-  margin-top: 20px;
-}
-
-.login-link {
-  color: #007acc;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.login-link:hover {
-  text-decoration: underline;
-}
 </style>
