@@ -4,6 +4,8 @@ import { useAuthStore } from '../services/auth'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 import { API_BASE_URL } from '@/config'
+import { RouterLink } from 'vue-router'
+import { getLeaderboard } from '@/utils/requests.js';
 
 const games = ref([])
 const authStore = useAuthStore()
@@ -23,29 +25,41 @@ onMounted(async () => {
   }
   fetchGames()
 })
-
-
+</script>
+<script>
+  export default {
+    data() {
+      return {
+        scoresVisible: false,
+      };
+    },
+    methods: {
+      toggleScoreVisibility() {
+        this.scoresVisible = !this.scoresVisible;
+      },
+    },
+  };
 </script>
 
 <template>
   <div class="container">
     <h1>{{ authStore.user?.username }}</h1>
-    <button>my scores</button>
+    <button @click="toggleScoreVisibility">my scores</button>
+    <div v-show="scoresVisible">
+      <p v-if="games.length === 0">No games to display</p>
+      <ul v-else>
+        <li v-for="game in games">
+          <h2>
+            {{ game.name }}
+          </h2>
+          <div>
+            score here
+          </div>
+        </li>
+      </ul>
+    </div>
     <button>Edit</button>
     <button class="logout-btn" @click="authStore.logout(this.$router)">Logout</button>
-
-    <p v-if="games.length === 0">No games to display</p>
-    <ul v-else>
-      <li v-for="game in games">
-        <h2>
-          {{ game.name }}
-        </h2>
-        <div>
-          score here
-        </div>
-      </li>
-    </ul>
-
   </div>
 </template>
 

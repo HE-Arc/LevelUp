@@ -96,7 +96,7 @@ def leaderboard(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def user_overall_score(request) -> Response(dict[str, int]):
     """
     Returns the average position in the leaderboard and total score for the user_id specified GET parameters.
@@ -118,7 +118,7 @@ def user_overall_score(request) -> Response(dict[str, int]):
         if position is None:
             continue
 
-        score = 100 / (position ** .5)
+        score = 100 / (position**0.5)
 
         position_sum += position
         score_sum += score
@@ -129,12 +129,12 @@ def user_overall_score(request) -> Response(dict[str, int]):
         {
             "position": position_sum / nb_games if nb_games > 0 else 0,
             "score": score_sum,
-        }
-        , status=status.HTTP_200_OK
+        },
+        status=status.HTTP_200_OK,
     )
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def user_full_score(request) -> Response(dict[str, dict[str, int | float]]):
     """
     Returns the position in the leaderboard and score for the user_id specified GET parameters, in each game and overall.
@@ -158,7 +158,7 @@ def user_full_score(request) -> Response(dict[str, dict[str, int | float]]):
         if position is None:
             continue
 
-        score = 100 / (position ** .5)
+        score = 100 / (position**0.5)
 
         positions[game.name] = position
         scores[game.name] = score
@@ -168,15 +168,15 @@ def user_full_score(request) -> Response(dict[str, dict[str, int | float]]):
 
         nb_games += 1
 
-    positions['overall'] = position_sum / nb_games if nb_games > 0 else 0
-    scores['overall'] = score_sum
+    positions["overall"] = position_sum / nb_games if nb_games > 0 else 0
+    scores["overall"] = score_sum
 
     return Response(
         {
             "positions": positions,
             "scores": scores,
-        }
-        , status=status.HTTP_200_OK
+        },
+        status=status.HTTP_200_OK,
     )
 
 
