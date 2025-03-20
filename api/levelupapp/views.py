@@ -72,7 +72,9 @@ def register(request):
 
 @api_view(['POST'])
 def save_score(request):
-    serializer = ScoreSerializer(data=request.data, context={"request": request})
+    data = request.data
+    data['game'] = Game.objects.get(name=request.data['game']).id
+    serializer = ScoreSerializer(data=data, context={"request": request})
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -81,10 +83,10 @@ def save_score(request):
 
 @api_view(['GET'])
 def leaderboard(request):
-    game_id = request.GET.get("game_id")
+    game_name = request.GET.get("game_name")
 
     try:
-        game = Game.objects.get(id=game_id)
+        game = Game.objects.get(name=game_name)
     except Game.DoesNotExist:
         return Response({"error": "Game not found"}, status=status.HTTP_404_NOT_FOUND)
 

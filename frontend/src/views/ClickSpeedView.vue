@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref } from 'vue'
-import { GameId, saveScore } from '@/utils/requests.js'
+import { GameName, saveScore } from '@/utils/requests.js'
 import { useAuthStore } from '@/services/auth.js'
 import { useRouter } from 'vue-router'
 
@@ -52,7 +52,7 @@ const incrementScore = () => {
 }
 
 const gameEnd = async () => {
-  await saveScore(GameId.CLICKSPEED, nbClick.value, authStore.user.id)
+  await saveScore(GameName.CLICKSPEED, nbClick.value, authStore.user.id)
 }
 </script>
 

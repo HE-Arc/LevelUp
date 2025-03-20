@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useAuthStore } from '../services/auth'
 import { useRouter } from 'vue-router'
-import { GameId, saveScore } from '@/utils/requests.js'
+import { GameName, saveScore } from '@/utils/requests.js'
 
 const icons = ['φ', 'Ψ', 'λ', 'π', 'ξ', 'Ω', 'Σ', 'θ', 'Δ']
 const cards = ref([])
@@ -75,7 +75,7 @@ const resetTurn = () => {
 }
 
 const gameEnd = async () => {
-  await saveScore(GameId.MEMORY, score, authStore.user.id)
+  await saveScore(GameName.MEMORY, score, authStore.user.id)
 }
 
 onMounted(() => {

@@ -2,7 +2,7 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useAuthStore } from '../services/auth';
 import { useRouter } from 'vue-router';
-import { GameId, saveScore } from '@/utils/requests.js'
+import { GameName, saveScore } from '@/utils/requests.js'
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -43,7 +43,7 @@ const stopGame = async () => {
   timer.value = null;
   gameStarted.value = false;
   gameOver.value = true;
-  await saveScore(GameId.REFLEX, score.value, authStore.user.id)
+  await saveScore(GameName.REFLEX, score.value, authStore.user.id)
 };
 
 const generateGrid = () => {
