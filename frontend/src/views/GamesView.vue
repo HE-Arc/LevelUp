@@ -41,7 +41,6 @@ const fetchUserRanks = async () => {
 
 onMounted(async () => {
   await authStore.fetchUser()
-  //console.log('User loaded:', authStore.user)
   if (!authStore.user) {
     router.push('/login')
     return
