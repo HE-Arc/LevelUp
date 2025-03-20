@@ -22,6 +22,15 @@ class Game(models.Model):
 
         return top_scores
 
+    def get_user_score(self, user) -> int | None:
+        """Returns the position of the user in the leaderboard for this game, None if user not in leaderboard."""
+        leaderboard = self.get_leaderboard()
+        leaderboard_users = [score.user for score in leaderboard]
+        if user in leaderboard_users:
+            return [score.user for score in leaderboard].index(user) + 1
+        return None
+
+
 
 class Score(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
