@@ -8,6 +8,7 @@ import MemoryLeaderBoardView from '@/views/MemoryLeaderBoardView.vue'
 import ClickSpeedLeaderboard from '@/views/ClickSpeedLeaderboard.vue'
 import ReflexGameView from '@/views/ReflexGameView.vue'
 import ReflexLeaderboard from '@/views/ReflexLeaderboard.vue'
+import GlobalLeaderboardView from '@/views/GlobalLeaderboardView.vue'
 
 const routes = [
   {
@@ -60,6 +61,11 @@ const routes = [
     name: 'reflex-leaderboard',
     component: ReflexLeaderboard,
   },
+  {
+    path: '/games/leaderboard',
+    name: 'leaderboard',
+    component: GlobalLeaderboardView
+  }
 ]
 
 const router = createRouter({
