@@ -83,7 +83,7 @@
             Global
           </h2>
           <div>
-            
+
           </div>
         </li>
         <li v-for="game in games">
