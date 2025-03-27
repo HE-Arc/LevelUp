@@ -9,6 +9,7 @@
 
   const games = ref([])
   const userRanks = ref({})
+  const userFullScore = ref({})
   const authStore = useAuthStore()
   const router = useRouter()
 
@@ -18,6 +19,12 @@
     if (authStore.user) {
       await fetchUserRanks()
     }
+  }
+
+  const fetchUserFullScore = async () => {
+    const jsonResult = await axios.get(`${API_BASE_URL}/user_full_score/`)
+    const result = JSON.parse(jsonResult)
+    userFullScore.value = result
   }
 
   const fetchUserRanks = async () => {
@@ -71,6 +78,14 @@
     <div v-if="scoresVisible">
       <p v-if="games.length === 0">No games to display</p>
       <ul v-else>
+        <li>
+          <h2>
+            Global
+          </h2>
+          <div>
+            
+          </div>
+        </li>
         <li v-for="game in games">
           <h2>
             {{ game.name }}
@@ -84,10 +99,12 @@
     <button @click="toggleInfoVisibility">Edit</button>
     <div v-if="infoVisible">
       <table>
-        <tr>
-          <td>Username :</td>
-          <td>{{ authStore.user?.username }}</td>
-        </tr>
+        <tbody>
+          <tr>
+            <td>Username :</td>
+            <td>{{ authStore.user?.username }}</td>
+          </tr>
+        </tbody>
       </table>
     </div>
 
@@ -96,7 +113,6 @@
 </template>
 
 <style scoped>
-
 
 .container {
   max-width: 600px;
