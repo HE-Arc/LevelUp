@@ -8,11 +8,11 @@ const authStore = useAuthStore();
 const router = useRouter();
 
 const colors = ['e33', 'e93', 'ed3', '3b9', '39e', '93e', 'e39'];
-const gridSize = 5; //taille de la grille (dynamique)
+const gridSize = 5;
 const grid = ref([]);
 const oddColorIndex = ref(0);
 const score = ref(0);
-const timeLeft = ref(30); //temps de la partie
+const timeLeft = ref(30);
 const timer = ref(null);
 const gameStarted = ref(false);
 const gameOver = ref(false);
@@ -65,7 +65,7 @@ const checkAnswer = (index) => {
   if (index === oddColorIndex.value) {
     score.value++;
   } else {
-    timeLeft.value = Math.max(0, timeLeft.value - 2); //pénalité si mauvais carré, -2 sec
+    timeLeft.value = Math.max(0, timeLeft.value - 2);
   }
   generateGrid();
 };
@@ -82,10 +82,10 @@ onBeforeUnmount(() => {
 <template>
   <div class="game-container">
     <h1>Reflex Game</h1>
-    <h2 v-if="gameOver">Score final : {{ score }}</h2>
-    <h2 v-if="gameStarted">Temps restant: {{ formattedTime }}</h2>
+    <h2 v-if="gameOver">Final score: {{ score }}</h2>
+    <h2 v-if="gameStarted">Time left: {{ formattedTime }}</h2>
     <h2 v-if="gameStarted">Score: {{ score }}</h2>
-    <button @click="startGame" v-if="!gameStarted">Start</button>
+    <button class="btn-start" @click="startGame" v-if="!gameStarted">Start</button>
 
     <div class="grid" v-if="gameStarted">
       <button
@@ -114,6 +114,10 @@ onBeforeUnmount(() => {
   margin-top: 20px;
 }
 
+h1 {
+  color: #007acc;
+}
+
 button {
   width: 60px;
   height: 60px;
@@ -125,6 +129,23 @@ button {
 
 button:active {
   transform: scale(0.9);
+}
+
+.btn-start {
+  background: #007acc;
+  color: white;
+  border: none;
+  padding: 15px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+  width: 300px;
+  font-size: 1.4rem;
+  margin-top: 10px;
+}
+
+.btn-start:hover {
+  background: #005f99;
 }
 
 @media (max-width: 600px) {

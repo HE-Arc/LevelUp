@@ -9,6 +9,8 @@ import ClickSpeedLeaderboard from '@/views/ClickSpeedLeaderboard.vue'
 import ReflexGameView from '@/views/ReflexGameView.vue'
 import ReflexLeaderboard from '@/views/ReflexLeaderboard.vue'
 import GlobalLeaderboardView from '@/views/GlobalLeaderboardView.vue'
+import SnakeGame from '@/views/SnakeGame.vue'
+import SnakeLeaderboard from '@/views/SnakeLeaderboard.vue'
 
 const routes = [
   {
@@ -65,7 +67,17 @@ const routes = [
     path: '/games/leaderboard',
     name: 'leaderboard',
     component: GlobalLeaderboardView
-  }
+  },
+  {
+    path: '/games/snake',
+    name: 'snake',
+    component: SnakeGame,
+  },
+  {
+    path: '/games/leaderboard/snake',
+    name: 'snake-leaderboard',
+    component: SnakeLeaderboard,
+  },
 ]
 
 const router = createRouter({
