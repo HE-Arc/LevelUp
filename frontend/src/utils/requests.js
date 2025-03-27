@@ -5,6 +5,7 @@ export const GameName = {
   MEMORY: "Memory",
   CLICKSPEED: "ClickSpeed",
   REFLEX: "Reflex",
+  SNAKE: "Snake",
 }
 
 export async function saveScore(gameName, score, userId) {

@@ -13,6 +13,7 @@ from rest_framework.response import Response
 
 from .forms import CreateUserForm
 from .models import Game, Score
+from .score_utils import ScoreUtils
 from .serializers import ScoreSerializer, GameSerializer
 
 
@@ -96,10 +97,10 @@ def leaderboard(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-@api_view(["GET"])
-def user_overall_score(request) -> Response(dict[str, int]):
+@api_view(['GET'])
+def rank_score_sum(request) -> Response(dict[str, int]):
     """
-    Returns the average position in the leaderboard and total score for the user_id specified GET parameters.
+    Returns the total rank score for the user_id specified GET parameters.
     """
 
     user_id = request.GET.get("user_id")
@@ -109,35 +110,31 @@ def user_overall_score(request) -> Response(dict[str, int]):
     except User.DoesNotExist:
         return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
-    position_sum = 0
-    score_sum = 0
-    nb_games = 0
+    rank_score_sum = 0
 
     for game in Game.objects.all():
-        position = game.get_user_score(user)
-        if position is None:
+        rank = game.get_user_rank(user)
+        if rank is None:
             continue
 
-        score = 100 / (position**0.5)
-
-        position_sum += position
-        score_sum += score
-
-        nb_games += 1
+        rank_score_sum += ScoreUtils.rank_score(rank)
 
     return Response(
         {
-            "position": position_sum / nb_games if nb_games > 0 else 0,
-            "score": score_sum,
-        },
-        status=status.HTTP_200_OK,
+            "rank_score_sum": rank_score_sum,
+        }
+        , status=status.HTTP_200_OK
     )
 
 
 @api_view(["GET"])
 def user_full_score(request) -> Response(dict[str, dict[str, int | float]]):
     """
-    Returns the position in the leaderboard and score for the user_id specified GET parameters, in each game and overall.
+    Returns everything related to the score of the user corresponding to this user_id passed in GET parameters
+    - Score and rank and rank score for each game
+    - Average rank on all played games
+    - Sum of rank score
+    - Rank of rank score
     """
 
     user_id = request.GET.get("user_id")
@@ -147,36 +144,70 @@ def user_full_score(request) -> Response(dict[str, dict[str, int | float]]):
     except User.DoesNotExist:
         return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
-    positions = {}
-    position_sum = 0
     scores = {}
-    score_sum = 0
+    for score in Score.objects.filter(user_id=user_id):
+        scores[score.game.name] = score.points
+
+    ranks = {}
+    rank_sum = 0
+    rank_scores = {}
+    rank_score_sum = 0
     nb_games = 0
 
     for game in Game.objects.all():
-        position = game.get_user_score(user)
-        if position is None:
+        rank = game.get_user_rank(user)
+        if rank is None:
             continue
 
-        score = 100 / (position**0.5)
+        score = ScoreUtils.rank_score(rank)
 
-        positions[game.name] = position
-        scores[game.name] = score
+        ranks[game.name] = rank
+        rank_scores[game.name] = score
 
-        position_sum += position
-        score_sum += score
+        rank_sum += rank
+        rank_score_sum += score
 
         nb_games += 1
 
-    positions["overall"] = position_sum / nb_games if nb_games > 0 else 0
-    scores["overall"] = score_sum
+    return Response(
+        {
+            "scores": scores,
+            "ranks": ranks,
+            "rank_avg": rank_sum / nb_games if nb_games > 0 else 0,
+            "rank_scores": rank_scores,
+            "rank_score_sum": rank_score_sum,
+            "rank_score_rank": ScoreUtils.rank_score_rank(user)
+        }
+        , status=status.HTTP_200_OK
+    )
+
+
+@api_view(["GET"])
+def rank_score_leaderboard(request):
+    rsl = ScoreUtils.rank_score_leaderboard()
+
+    rsl = [{"username": entry[0].username, "rank_score": entry[1]} for entry in rsl]
+
+    return Response(
+        rsl
+        , status=status.HTTP_200_OK
+    )
+
+
+@api_view(["GET"])
+def rank_score_rank(request):
+    user_id = request.GET.get("user_id")
+
+    try:
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
     return Response(
         {
-            "positions": positions,
-            "scores": scores,
-        },
-        status=status.HTTP_200_OK,
+            "rank_score_rank": ScoreUtils.rank_score_rank(user)
+        }
+        , status=status.HTTP_200_OK
     )
 
 

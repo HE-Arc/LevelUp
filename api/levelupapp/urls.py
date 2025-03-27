@@ -15,6 +15,8 @@ urlpatterns = [
     path("register", views.register, name="register"),
     path("save_score", views.save_score, name="save_score"),
     path('leaderboard', views.leaderboard, name='leaderboard'),
-    path("user_overall_score", views.user_overall_score, name="user_overall_score"),
+    path("rank_score_sum", views.rank_score_sum, name="rank_score_sum"),
     path("user_full_score", views.user_full_score, name="user_full_score"),
+    path("rank_score_leaderboard", views.rank_score_leaderboard, name="rank_score_leaderboard"),
+    path("rank_score_rank", views.rank_score_rank, name="rank_score_rank"),
 ]

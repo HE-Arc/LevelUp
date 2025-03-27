@@ -1,41 +1,64 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useAuthStore } from '../services/auth'
-import { useRouter } from 'vue-router'
-import axios from 'axios'
-import { API_BASE_URL } from '@/config'
-import { RouterLink } from 'vue-router'
-import { getLeaderboard } from '@/utils/requests.js';
+  import { ref, onMounted } from 'vue'
+  import { useAuthStore } from '../services/auth'
+  import { useRouter } from 'vue-router'
+  import axios from 'axios'
+  import { API_BASE_URL } from '@/config'
+  import { RouterLink } from 'vue-router'
+  import { getLeaderboard } from '@/utils/requests.js';
 
-const games = ref([])
-const authStore = useAuthStore()
-const router = useRouter()
+  const games = ref([])
+  const userRanks = ref({})
+  const authStore = useAuthStore()
+  const router = useRouter()
 
-const fetchGames = async () => {
-  const res = await axios.get(`${API_BASE_URL}/games/`)
-  games.value = res.data
-}
-
-onMounted(async () => {
-  await authStore.fetchUser()
-  console.log('User loaded:', authStore.user)
-  if (!authStore.user) {
-    router.push('/login')
-    return
+  const fetchGames = async () => {
+    const res = await axios.get(`${API_BASE_URL}/games/`)
+    games.value = res.data
+    if (authStore.user) {
+      await fetchUserRanks()
+    }
   }
-  fetchGames()
-})
+
+  const fetchUserRanks = async () => {
+    const username = authStore.user.username
+    for (const game of games.value) {
+      try {
+        const leaderboard = await getLeaderboard(game.name);
+
+        const userEntry = leaderboard.find(player => player.username === username);
+        userRanks.value[game.id] = userEntry ? leaderboard.indexOf(userEntry) + 1 : '-';
+      } catch (error) {
+        console.error(`Error with ${game.name}:`, error)
+        userRanks.value[game.id] = 'N/A'
+      }
+    }
+  }
+
+  onMounted(async () => {
+    await authStore.fetchUser()
+    console.log('User loaded:', authStore.user)
+    if (!authStore.user) {
+      router.push('/login')
+      return
+    }
+    fetchGames()
+  })
 </script>
 <script>
   export default {
     data() {
       return {
         scoresVisible: false,
+        infoVisible: false,
       };
     },
     methods: {
       toggleScoreVisibility() {
         this.scoresVisible = !this.scoresVisible;
+      },
+      toggleInfoVisibility() {
+        this.infoVisible = !this.infoVisible;
       },
     },
   };
@@ -45,7 +68,7 @@ onMounted(async () => {
   <div class="container">
     <h1>{{ authStore.user?.username }}</h1>
     <button @click="toggleScoreVisibility">my scores</button>
-    <div v-show="scoresVisible">
+    <div v-if="scoresVisible">
       <p v-if="games.length === 0">No games to display</p>
       <ul v-else>
         <li v-for="game in games">
@@ -58,7 +81,16 @@ onMounted(async () => {
         </li>
       </ul>
     </div>
-    <button>Edit</button>
+    <button @click="toggleInfoVisibility">Edit</button>
+    <div v-if="infoVisible">
+      <table>
+        <tr>
+          <td>Username :</td>
+          <td>{{ authStore.user?.username }}</td>
+        </tr>
+      </table>
+    </div>
+
     <button class="logout-btn" @click="authStore.logout(this.$router)">Logout</button>
   </div>
 </template>

@@ -19,7 +19,9 @@ const isUserInTop10 = computed(() => sortedPlayers.value.some(player => player.u
 <template>
   <div class="leaderboard">
     <h1>{{ title }} Leaderboard</h1>
-    <div class="scrollable-table">
+
+    <!-- Conteneur fixe pour l'en-tête -->
+    <div class="table-header">
       <table>
         <thead>
           <tr>
@@ -28,6 +30,10 @@ const isUserInTop10 = computed(() => sortedPlayers.value.some(player => player.u
             <th>Points</th>
           </tr>
         </thead>
+      </table>
+    </div>
+    <div class="table-body">
+      <table>
         <tbody>
           <tr v-for="(player, index) in props.players" :key="player.username"
               :class="{ 'highlight-user': player.username === currentUser }">
@@ -68,7 +74,17 @@ h1 {
   color: #007acc;
 }
 
-.scrollable-table {
+/* Conteneur de l'en-tête du tableau */
+.table-header {
+  width: 100%;
+  position: relative;
+  background-color: #007acc;
+  color: white;
+  padding: 10px 0;
+}
+
+/* Conteneur scrollable pour le corps du tableau */
+.table-body {
   max-height: 400px;
   overflow-y: auto;
 }
@@ -76,18 +92,22 @@ h1 {
 table {
   width: 100%;
   border-collapse: collapse;
-}
-
-th, td {
-  padding: 10px;
-  border: 1px solid #ddd;
-  width: 33.33%;
-  text-align: center;
+  table-layout: fixed;  /* Empêche la redimension dynamique */
 }
 
 th {
   background-color: #007acc;
   color: white;
+}
+
+th, td {
+  padding: 10px;
+  width: 33.33%;
+  text-align: center;
+}
+
+td {
+  border: 1px solid #ddd;
 }
 
 .highlight-user {
@@ -96,3 +116,4 @@ th {
   color: white;
 }
 </style>
+

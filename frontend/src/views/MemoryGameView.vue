@@ -10,14 +10,29 @@ const flippedCards = ref([])
 const matchedCards = ref([])
 const lockBoard = ref(false)
 let score = 0
-const gain = 150
-const loss = 50
+const gain = 100
+const loss = 30
+const flipCounts = ref({})
 let nbFlipped = 0
 const authStore = useAuthStore()
 const router = useRouter()
 
+const gameOver = ref(false)
+
+const restartGame = () => {
+  gameOver.value = false
+  score = 0
+  nbFlipped = 0
+  flippedCards.value = []
+  matchedCards.value = []
+  flipCounts.value = {}
+  generateCards()
+}
+
+
 onMounted(async () => {
   await authStore.fetchUser()
+  console.log('User loaded:', authStore.user)
   if (!authStore.user) {
     router.push('/login')
     return
@@ -40,6 +55,10 @@ const generateCards = () => {
 
 const flipCard = (card) => {
   if (lockBoard.value || card.flipped) return
+
+  if (!flipCounts.value[card.id]) flipCounts.value[card.id] = 0
+  flipCounts.value[card.id]++
+
   card.flipped = true
   flippedCards.value.push(card)
 
@@ -59,13 +78,25 @@ const checkMatch = () => {
     if (nbFlipped === icons.length) gameEnd()
     resetTurn()
   } else {
-    score -= loss
+    score -= loss * ((flipCounts.value[flippedCards.value[0].id] - 1) + (flipCounts.value[flippedCards.value[1].id] - 1))
     setTimeout(() => {
       card1.flipped = false
       card2.flipped = false
       resetTurn()
     }, 1000)
   }
+}
+
+const getCardColor = (card) => {
+  const minFlips = Math.min(...Object.values(flipCounts.value), 1)
+  const maxFlips = Math.max(...Object.values(flipCounts.value), 4)
+  const flips = flipCounts.value[card.id] || 1
+
+
+  const percentage = (flips - minFlips) / (maxFlips - minFlips)
+  const hue = Math.round(100 * (1 - percentage))
+
+  return `hsl(${hue}, 100%, 45%)`
 }
 
 const resetTurn = () => {
@@ -75,6 +106,7 @@ const resetTurn = () => {
 
 const gameEnd = async () => {
   await saveScore(GameName.MEMORY, score, authStore.user.id)
+  gameOver.value = true
 }
 
 onMounted(() => {
@@ -87,8 +119,9 @@ onMounted(() => {
 <template>
   <div class="memory">
     <h1>Memory Game</h1>
-    <h2>{{ score }}</h2>
-    <div class="grid">
+    <h2>Score: {{ score }}</h2>
+
+    <div v-if="!gameOver" class="grid">
       <div
         v-for="card in cards"
         :key="card.id"
@@ -99,8 +132,23 @@ onMounted(() => {
         <span v-if="card.flipped">{{ card.icon }}</span>
       </div>
     </div>
+
+    <div v-if="gameOver">
+      <div class="grid heatmap">
+        <div
+          v-for="card in cards"
+          :key="card.id"
+          class="card heatmap-card"
+          :style="{ backgroundColor: getCardColor(card) }"
+        >
+          {{ card.icon }}
+        </div>
+      </div>
+      <button @click="restartGame" class="restart-btn">Restart</button>
+    </div>
   </div>
 </template>
+
 
 <style scoped>
 .memory {
@@ -141,9 +189,8 @@ h2 {
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  transition:
-    transform 0.3s,
-    font-size 0.3s;
+  transition: transform 0.3s,
+  font-size 0.3s;
   color: white;
 }
 
@@ -162,6 +209,30 @@ h2 {
 
 .card.flipped {
   transform: rotateY(180deg);
+  background-color: #005f99;
+}
+
+.heatmap {
+  margin-top: 1rem;
+}
+
+.heatmap-card {
+  cursor: default;
+}
+
+.restart-btn {
+  margin-top: 1rem;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  background-color: #007acc;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.restart-btn:hover {
   background-color: #005f99;
 }
 </style>
