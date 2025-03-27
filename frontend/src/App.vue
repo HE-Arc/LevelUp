@@ -20,8 +20,9 @@ const toggleMenu = () => {
         </button>
         <nav :class="{ 'open': isOpen }">
           <RouterLink to="/" @click="toggleMenu">Home</RouterLink>
-          <RouterLink to="/about" @click="toggleMenu">About</RouterLink>
+<!--          <RouterLink to="/about" @click="toggleMenu">About</RouterLink>-->
           <RouterLink to="/games" @click="toggleMenu">Games</RouterLink>
+          <RouterLink to="/games/leaderboard" @click="toggleMenu">Leaderboad</RouterLink>
         </nav>
       </div>
     </header>
