@@ -8,6 +8,8 @@ import MemoryLeaderBoardView from '@/views/MemoryLeaderBoardView.vue'
 import ClickSpeedLeaderboard from '@/views/ClickSpeedLeaderboard.vue'
 import ReflexGameView from '@/views/ReflexGameView.vue'
 import ReflexLeaderboard from '@/views/ReflexLeaderboard.vue'
+import SnakeGame from '@/views/SnakeGame.vue'
+import SnakeLeaderboard from '@/views/SnakeLeaderboard.vue'
 
 const routes = [
   {
@@ -59,6 +61,16 @@ const routes = [
     path: '/games/leaderboard/reflex',
     name: 'reflex-leaderboard',
     component: ReflexLeaderboard,
+  },
+  {
+    path: '/games/snake',
+    name: 'snake',
+    component: SnakeGame,
+  },
+  {
+    path: '/games/leaderboard/snake',
+    name: 'snake-leaderboard',
+    component: SnakeLeaderboard,
   },
 ]
 
