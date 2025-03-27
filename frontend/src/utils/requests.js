@@ -53,3 +53,23 @@ export async function getLeaderboard(gameName) {
     return []
   }
 }
+
+export async function getUserFullScore(user_id) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/user_full_score/?user_id=${user_id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    const text = await response.text()
+
+    const data = JSON.parse(text)
+
+    return data
+  } catch (error) {
+    console.error('Error while fetching leaderboard:', error)
+    return []
+  }
+}

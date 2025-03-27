@@ -4,11 +4,9 @@
   import { useRouter } from 'vue-router'
   import axios from 'axios'
   import { API_BASE_URL } from '@/config'
-  import { RouterLink } from 'vue-router'
-  import { getLeaderboard } from '@/utils/requests.js';
+import { getUserFullScore } from '@/utils/requests'
 
   const games = ref([])
-  const userRanks = ref({})
   const userFullScore = ref({})
   const authStore = useAuthStore()
   const router = useRouter()
@@ -16,30 +14,11 @@
   const fetchGames = async () => {
     const res = await axios.get(`${API_BASE_URL}/games/`)
     games.value = res.data
-    if (authStore.user) {
-      await fetchUserRanks()
-    }
   }
 
   const fetchUserFullScore = async () => {
-    const jsonResult = await axios.get(`${API_BASE_URL}/user_full_score/`)
-    const result = JSON.parse(jsonResult)
-    userFullScore.value = result
-  }
-
-  const fetchUserRanks = async () => {
-    const username = authStore.user.username
-    for (const game of games.value) {
-      try {
-        const leaderboard = await getLeaderboard(game.name);
-
-        const userEntry = leaderboard.find(player => player.username === username);
-        userRanks.value[game.id] = userEntry ? leaderboard.indexOf(userEntry) + 1 : '-';
-      } catch (error) {
-        console.error(`Error with ${game.name}:`, error)
-        userRanks.value[game.id] = 'N/A'
-      }
-    }
+    const res = await getUserFullScore(authStore.user) 
+    userFullScore.value = res
   }
 
   onMounted(async () => {
@@ -50,6 +29,7 @@
       return
     }
     fetchGames()
+    fetchUserFullScore()
   })
 </script>
 <script>
@@ -83,7 +63,7 @@
             Global
           </h2>
           <div>
-
+            {{ userFullScore }}
           </div>
         </li>
         <li v-for="game in games">
