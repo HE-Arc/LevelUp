@@ -212,9 +212,10 @@ def rank_score_rank(request):
 
 @api_view(["GET"])
 def records(request):
-    game_id = request.GET.get("game_id")
+    # game_id = request.GET.get("game_id")
+    game_name = request.GET.get("game_name")
 
-    game = Game.objects.get(id=game_id)
+    game = Game.objects.get(name=game_name)
     scores = game.get_records()
 
     serializer = ScoreSerializer(scores, many=True)
