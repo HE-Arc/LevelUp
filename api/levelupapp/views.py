@@ -210,6 +210,15 @@ def rank_score_rank(request):
         , status=status.HTTP_200_OK
     )
 
+@api_view(["GET"])
+def records(request):
+    game_id = request.GET.get("game_id")
+
+    game = Game.objects.get(id=game_id)
+    scores = game.get_records()
+
+    serializer = ScoreSerializer(scores, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 class GameViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Game.objects.all()

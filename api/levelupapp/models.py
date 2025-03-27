@@ -1,3 +1,5 @@
+from functools import reduce
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Max
@@ -22,6 +24,22 @@ class Game(models.Model):
         ]
 
         return top_scores
+
+    def get_records(self):
+        # Get all scores
+        scores = list(self.score_set.order_by("date"))
+
+        # Remove scores that have fewer points than the previous
+        i = 1
+        while True:
+            if i >= len(scores):
+                break
+            if scores[i].points > scores[i - 1].points:
+                i += 1
+            else:
+                scores.pop(i)
+
+        return scores
 
     def get_user_rank(self, user) -> int | None:
         """Returns the position of the user in the leaderboard for this game, None if user not in leaderboard."""
