@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Max
+import datetime
 
 
 class Game(models.Model):
@@ -31,8 +32,8 @@ class Game(models.Model):
         return None
 
 
-
 class Score(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
     points = models.IntegerField(default=0)
+    date = models.DateTimeField(default=datetime.datetime.utcnow())
