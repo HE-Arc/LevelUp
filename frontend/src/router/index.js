@@ -10,6 +10,7 @@ import ReflexGameView from '@/views/ReflexGameView.vue'
 import ReflexLeaderboard from '@/views/ReflexLeaderboard.vue'
 import SnakeGame from '@/views/SnakeGame.vue'
 import SnakeLeaderboard from '@/views/SnakeLeaderboard.vue'
+import Personal from '@/views/PersonalView.vue'
 
 const routes = [
   {
