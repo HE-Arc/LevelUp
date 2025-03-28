@@ -44,7 +44,11 @@ const startGame = () => {
   }, 1000)
 }
 
-const incrementScore = () => {
+const incrementScore = (event) => {
+  if (event.pointerId === -1) {
+    // If the player "clicked" with the enter key, ignore it
+    return;
+  }
   if (gameRunning.value) {
     nbClick.value++
   }
