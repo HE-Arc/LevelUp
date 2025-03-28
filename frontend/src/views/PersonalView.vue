@@ -87,6 +87,10 @@
             <td>Username :</td>
             <td>{{ authStore.user?.username }}</td>
           </tr>
+          <tr>
+            <td>email address :</td>
+            <td>{{ authStore.user?.email }}</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -121,8 +125,9 @@ h1 {
 }
 
 table {
-  margin: 1% 0 2% 0;
+  margin: 2% 0 3% 2%;
   width: 100%;
+  text-align: left;
 }
 
 button {
