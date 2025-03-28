@@ -53,3 +53,22 @@ export async function getLeaderboard(gameName) {
     return []
   }
 }
+
+export async function getRecords(gameName) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/records?game_name=${gameName}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    const text = await response.text()
+
+    return JSON.parse(text)
+
+  } catch (error) {
+    console.error('Error while fetching records:', error)
+    return []
+  }
+}
