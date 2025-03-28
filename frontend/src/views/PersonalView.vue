@@ -55,7 +55,7 @@
   <div class="container">
     <h1>{{ authStore.user?.username }}</h1>
     <button @click="toggleScoreVisibility">my scores</button>
-    <div v-if="scoresVisible">
+    <div v-if="scoresVisible" class="content">
       <p v-if="games.length === 0">No games to display</p>
       <table v-else>
         <thead>
@@ -80,7 +80,7 @@
       </table>
     </div>
     <button @click="toggleInfoVisibility">Edit</button>
-    <div v-if="infoVisible">
+    <div v-if="infoVisible" class="content">
       <table>
         <tbody>
           <tr>
@@ -105,15 +105,24 @@
   font-size: 1.1rem;
   padding: 20px;
   flex-direction: column;
+  display: flex;
+  justify-content: center;
 }
 
 h1 {
   color: #007acc;
-  text-align: center;
 }
 
-h2 {
-  text-align: left;
+.content {
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+table {
+  margin: 1% 0 2% 0;
+  width: 100%;
 }
 
 button {
@@ -125,6 +134,7 @@ button {
   cursor: pointer;
   transition: background 0.3s;
   font-size: 1.2rem;
+  margin: 0 auto;
   margin-top: 10px;
   width: 80%;
 }
