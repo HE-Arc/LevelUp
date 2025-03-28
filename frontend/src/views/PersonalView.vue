@@ -4,7 +4,7 @@
   import { useRouter } from 'vue-router'
   import axios from 'axios'
   import { API_BASE_URL } from '@/config'
-import { getUserFullScore } from '@/utils/requests'
+  import { getUserFullScore } from '@/utils/requests'
 
   const games = ref([])
   const userFullScore = ref({})
@@ -17,7 +17,7 @@ import { getUserFullScore } from '@/utils/requests'
   }
 
   const fetchUserFullScore = async () => {
-    const res = await getUserFullScore(authStore.user) 
+    const res = await getUserFullScore(authStore.user.id)
     userFullScore.value = res
   }
 
@@ -57,24 +57,27 @@ import { getUserFullScore } from '@/utils/requests'
     <button @click="toggleScoreVisibility">my scores</button>
     <div v-if="scoresVisible">
       <p v-if="games.length === 0">No games to display</p>
-      <ul v-else>
-        <li>
-          <h2>
-            Global
-          </h2>
-          <div>
-            {{ userFullScore }}
-          </div>
-        </li>
-        <li v-for="game in games">
-          <h2>
-            {{ game.name }}
-          </h2>
-          <div>
-            score here
-          </div>
-        </li>
-      </ul>
+      <table v-else>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Ranks</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Global</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr v-for="game in games">
+            <td>{{ game.name }}</td>
+            <td>{{ userFullScore["ranks"][game.name] }}</td>
+            <td>{{ userFullScore["scores"][game.name] }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <button @click="toggleInfoVisibility">Edit</button>
     <div v-if="infoVisible">
