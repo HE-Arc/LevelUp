@@ -68,8 +68,8 @@
         <tbody>
           <tr>
             <td>Global</td>
-            <td></td>
-            <td></td>
+            <td>{{ userFullScore["rank_score_rank"] }}</td>
+            <td>{{ Math.round(userFullScore["rank_score_sum"]) }}</td>
           </tr>
           <tr v-for="game in games">
             <td>{{ game.name }}</td>
