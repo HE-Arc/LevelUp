@@ -3,6 +3,7 @@ import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { GameName, saveScore } from '@/utils/requests.js'
 import { useAuthStore } from '@/services/auth.js'
 import { useRouter } from 'vue-router'
+import Navigation from './Navigation.vue'
 
 const tileCount = 15
 const snake = ref([{ x: 10, y: 10 }])
@@ -122,7 +123,6 @@ const gameEnd = async () => {
 
 onMounted(async () => {
   await authStore.fetchUser()
-  console.log('User loaded:', authStore.user)
   if (!authStore.user) {
     router.push('/login')
     return
@@ -137,11 +137,12 @@ onUnmounted(() => {
 </script>
 
 <template>
+  <Navigation v-if="!gameStarted" :gameName="GameName.SNAKE" :modeId="false"/>
   <div class="game-container">
     <h1>Snake Game</h1>
     <h2 v-if="gameStarted">Score: {{ score }}</h2>
 
-      <h2 v-if="gameOver">Final score: {{ score }}</h2>
+    <h2 v-if="gameOver">Final score: {{ score }}</h2>
 
     <div v-if="!gameStarted" class="start-screen">
       <p class="description">Move the snake using WASD keys or the arrow buttons below.</p>
@@ -191,7 +192,7 @@ h1 {
 h2 {
   margin-top: 0.5rem;
   margin-bottom: 1rem;
-  font-size: 1.3rem;
+  font-size: 1.6rem;
 }
 
 .grid {

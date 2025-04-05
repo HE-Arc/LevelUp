@@ -17,5 +17,5 @@ onMounted(async () => {
 </script>
 
 <template>
-  <LeaderboardView title="Reflex Game" :players="reflexPlayers" :records="reflexRecords" />
+  <LeaderboardView title="Reflex" :game="GameName.REFLEX" :players="reflexPlayers" :records="reflexRecords" />
 </template>

@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue'
 import { GameName, saveScore } from '@/utils/requests.js'
 import { useAuthStore } from '@/services/auth.js'
 import { useRouter } from 'vue-router'
+import Navigation from './Navigation.vue'
 
 const timeLeft = ref(10)
 const nbClick = ref(0)
@@ -60,10 +61,11 @@ const gameEnd = async () => {
 </script>
 
 <template>
+  <Navigation :gameName="GameName.CLICKSPEED" :modeId="false"/>
   <div class="game-container">
     <h1>Click Speed Game</h1>
     <p v-if="!gameRunning">Press “Start” and click as much as you can in 10 seconds!</p>
-    <p v-else>Time left : {{ timeLeft }}s</p>
+    <h2 v-else>Time left : {{ timeLeft }}s</h2>
 
     <button class="counter" v-if="gameRunning" @click="incrementScore">{{ nbClick }}</button>
 
@@ -84,6 +86,12 @@ const gameEnd = async () => {
 h1 {
   color: #007acc;
   margin-bottom: 20px;
+}
+
+h2 {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.6rem;
 }
 
 p {

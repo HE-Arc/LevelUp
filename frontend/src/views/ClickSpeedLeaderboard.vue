@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import LeaderboardView from '@/views/LeaderboardView.vue';
 import { GameName, getLeaderboard, getRecords } from '@/utils/requests.js'
+import Navigation from './Navigation.vue'
 
 const clickSpeedPlayers = ref([]);
 const clickSpeedRecords = ref([]);
@@ -17,5 +18,5 @@ onMounted(async () => {
 </script>
 
 <template>
-  <LeaderboardView title="Click Speed Game" :players="clickSpeedPlayers" :records="clickSpeedRecords" />
+  <LeaderboardView title="Click Speed" :game="GameName.CLICKSPEED" :players="clickSpeedPlayers" :records="clickSpeedRecords" />
 </template>

@@ -7,9 +7,12 @@ import { Chart } from 'chart.js/auto'
 import 'chartjs-adapter-date-fns'
 import { frCH } from 'date-fns/locale'
 import { format } from 'date-fns'
+import Navigation from './Navigation.vue'
 
 const props = defineProps({
   title: String,
+  game: String,
+  isGloabal: Boolean,
   players: Array,
   records: Array,
 })
@@ -78,10 +81,9 @@ const recordChartOptions = {
 </script>
 
 <template>
+  <Navigation v-if="isGloabal==false" :gameTitle="props.title" :gameName="props.game" :modeId="true"/>
   <div class="leaderboard">
     <h1>{{ title }} Leaderboard</h1>
-
-    <!-- Conteneur fixe pour l'en-tête -->
     <div class="table-header">
       <table>
         <thead>
@@ -139,7 +141,6 @@ h1, h2 {
   color: #007acc;
 }
 
-/* Conteneur de l'en-tête du tableau */
 .table-header {
   width: 100%;
   position: relative;
@@ -148,7 +149,6 @@ h1, h2 {
   padding: 10px 0;
 }
 
-/* Conteneur scrollable pour le corps du tableau */
 .table-body {
   max-height: 400px;
   overflow-y: auto;
@@ -157,7 +157,7 @@ h1, h2 {
 table {
   width: 100%;
   border-collapse: collapse;
-  table-layout: fixed; /* Empêche la redimension dynamique */
+  table-layout: fixed;
 }
 
 th {

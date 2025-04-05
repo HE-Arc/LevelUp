@@ -3,6 +3,7 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useAuthStore } from '../services/auth';
 import { useRouter } from 'vue-router';
 import { GameName, saveScore } from '@/utils/requests.js'
+import Navigation from './Navigation.vue'
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -80,11 +81,12 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
+  <Navigation v-if="!gameStarted" :gameName="GameName.REFLEX" :modeId="false"/>
   <div class="game-container">
     <h1>Reflex Game</h1>
+    <p v-if="!gameStarted">Press “Start” and click on the differents colors, you have 30 secondes to click as much as ou can!</p>
     <h2 v-if="gameOver">Final score: {{ score }}</h2>
-    <h2 v-if="gameStarted">Time left: {{ formattedTime }}</h2>
-    <h2 v-if="gameStarted">Score: {{ score }}</h2>
+    <h2 v-if="gameStarted">Time left: {{ formattedTime }}, Score: {{ score }}</h2>
     <button class="btn-start" @click="startGame" v-if="!gameStarted">Start</button>
 
     <div class="grid" v-if="gameStarted">
@@ -105,6 +107,10 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: 10px;
   font-family: Arial, sans-serif;
+  text-align: center;
+  margin-inline: auto;
+  max-width: 400px;
+  padding: 20px;
 }
 
 .grid {
@@ -116,6 +122,17 @@ onBeforeUnmount(() => {
 
 h1 {
   color: #007acc;
+}
+
+h2 {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.6rem;
+}
+
+p {
+  font-size: 1.3rem;
+  margin-bottom: 15px;
 }
 
 button {
