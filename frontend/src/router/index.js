@@ -12,6 +12,8 @@ import GlobalLeaderboardView from '@/views/GlobalLeaderboardView.vue'
 import SnakeGame from '@/views/SnakeGame.vue'
 import SnakeLeaderboard from '@/views/SnakeLeaderboard.vue'
 import Personal from '@/views/PersonalView.vue'
+import RunnerGame from '@/views/RunnerGameView.vue'
+import RunnerLeaderboard from '@/views/RunnerLeaderboard.vue'
 
 const routes = [
   {
@@ -83,7 +85,17 @@ const routes = [
     path: '/personal',
     name: 'personal',
     component: Personal,
-  }
+  },
+  {
+    path: '/games/runner',
+    name: 'runner',
+    component: RunnerGame,
+  },
+  {
+    path: '/games/leaderboard/runner',
+    name: 'runner-leaderboard',
+    component: RunnerLeaderboard,
+  },
 ]
 
 const router = createRouter({

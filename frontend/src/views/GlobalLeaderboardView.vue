@@ -25,5 +25,5 @@ onMounted(async () => {
 </script>
 
 <template>
-  <LeaderboardView title="Level-up" :players="globalPlayers" />
+  <LeaderboardView title="Level-up" :is-gloabal="true" :players="globalPlayers" />
 </template>

@@ -38,6 +38,8 @@
       return {
         scoresVisible: false,
         infoVisible: false,
+        editUsernameActive: false,
+        editMailActive: false,
       };
     },
     methods: {
@@ -47,6 +49,12 @@
       toggleInfoVisibility() {
         this.infoVisible = !this.infoVisible;
       },
+      activateNameEdit() {
+        this.editUsernameActive = !this.editUsernameActive;
+      },
+      activateMailEdit() {
+        this.editMailActive = !this.editMailActive;
+      }
     },
   };
 </script>
@@ -54,42 +62,52 @@
 <template>
   <div class="container">
     <h1>{{ authStore.user?.username }}</h1>
-    <button @click="toggleScoreVisibility">my scores</button>
+    <button @click=toggleScoreVisibility>My high scores</button>
     <div v-if="scoresVisible" class="content">
       <p v-if="games.length === 0">No games to display</p>
       <table v-else>
         <thead>
           <tr>
             <th></th>
-            <th>Ranks</th>
-            <th>Score</th>
+            <th class="number-col">Ranks</th>
+            <th class="number-col">Score</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr class="global-row">
             <td>Global</td>
-            <td>{{ userFullScore["rank_score_rank"] }}</td>
-            <td>{{ Math.round(userFullScore["rank_score_sum"]) }}</td>
+            <td class="number-col">{{ userFullScore["rank_score_rank"] }}</td>
+            <td class="number-col">{{ Math.round(userFullScore["rank_score_sum"]) }}</td>
           </tr>
           <tr v-for="game in games">
             <td>{{ game.name }}</td>
-            <td>{{ userFullScore["ranks"][game.name] }}</td>
-            <td>{{ userFullScore["scores"][game.name] }}</td>
+            <td class="number-col">{{ userFullScore["ranks"][game.name] }}</td>
+            <td class="number-col">{{ userFullScore["scores"][game.name] }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <button @click="toggleInfoVisibility">Edit</button>
+    <button @click="toggleInfoVisibility">Edit Profile</button>
     <div v-if="infoVisible" class="content">
       <table>
         <tbody>
           <tr>
             <td>Username :</td>
             <td>{{ authStore.user?.username }}</td>
+            <td>
+              <button class="small-btn" title="edit">
+                <i class="fas fa-edit"></i>
+              </button>
+            </td>
           </tr>
           <tr>
-            <td>email address :</td>
+            <td>email :</td>
             <td>{{ authStore.user?.email }}</td>
+            <td>
+              <button class="small-btn" title="edit">
+                <i class="fas fa-edit"></i>
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -130,6 +148,14 @@ table {
   text-align: left;
 }
 
+.number-col {
+  text-align: center;
+}
+
+.global-row {
+  font-weight: bold;
+}
+
 button {
   background: #007acc;
   color: white;
@@ -137,11 +163,17 @@ button {
   padding: 10px 15px;
   border-radius: 5px;
   cursor: pointer;
-  transition: background 0.3s;
   font-size: 1.2rem;
   margin: 0 auto;
   margin-top: 10px;
   width: 80%;
+}
+
+
+.small-btn {
+  margin: 0;
+  padding: 3px 8px;
+  font-size: 1rem;
 }
 
 button:hover {
@@ -155,5 +187,4 @@ button:hover {
 .logout-btn:hover {
   background: #e4641e
 }
-
 </style>
