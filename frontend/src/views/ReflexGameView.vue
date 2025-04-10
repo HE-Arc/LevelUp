@@ -18,6 +18,9 @@ const timer = ref(null);
 const gameStarted = ref(false);
 const gameOver = ref(false);
 
+const startButtonShow = ref(true)
+const timeToShowStartButton = ref(1)
+
 onMounted(async () => {
   await authStore.fetchUser();
   if (!authStore.user) {
@@ -30,6 +33,8 @@ const startGame = () => {
   timeLeft.value = 30;
   gameStarted.value = true;
   gameOver.value = false;
+  timeToShowStartButton.value = 1
+  startButtonShow.value = false
   generateGrid();
 
   if (timer.value) clearInterval(timer.value);
@@ -45,6 +50,17 @@ const stopGame = async () => {
   gameStarted.value = false;
   gameOver.value = true;
   await saveScore(GameName.REFLEX, score.value, authStore.user.id)
+
+  if (timer.value) clearInterval(timer.value);
+  timer.value = setInterval(() => {
+    timeLeft.value--;
+    if (timeToShowStartButton.value > 0) {
+      timeToShowStartButton.value--
+    } else {
+      clearInterval(timer)
+      startButtonShow.value = true
+    }
+  }, 1000);
 };
 
 const generateGrid = () => {
@@ -87,7 +103,7 @@ onBeforeUnmount(() => {
     <p v-if="!gameStarted">Press “Start” and click on the differents colors, you have 30 secondes to click as much as ou can!</p>
     <h2 v-if="gameOver">Final score: {{ score }}</h2>
     <h2 v-if="gameStarted">Time left: {{ formattedTime }}, Score: {{ score }}</h2>
-    <button class="btn-start" @click="startGame" v-if="!gameStarted">Start</button>
+    <button class="btn-start" @click="startGame" v-if="!gameStarted && startButtonShow">Start</button>
 
     <div class="grid" v-if="gameStarted">
       <button

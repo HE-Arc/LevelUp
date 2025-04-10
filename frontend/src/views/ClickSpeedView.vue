@@ -11,7 +11,7 @@ const gameRunning = ref(false)
 let timer = null
 
 const startButtonShow = ref(true)
-const timeToShowStartButton = ref(13)
+const timeToShowStartButton = ref(11)
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -26,7 +26,7 @@ onMounted(async () => {
 const startGame = () => {
   nbClick.value = 0
   timeLeft.value = 10
-  timeToShowStartButton.value = 13
+  timeToShowStartButton.value = 11
   gameRunning.value = true
   startButtonShow.value = false
 
