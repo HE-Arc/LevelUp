@@ -19,4 +19,5 @@ urlpatterns = [
     path("user_full_score", views.user_full_score, name="user_full_score"),
     path("rank_score_leaderboard", views.rank_score_leaderboard, name="rank_score_leaderboard"),
     path("rank_score_rank", views.rank_score_rank, name="rank_score_rank"),
+    path("records", views.records, name="records")
 ]

@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useAuthStore } from '../services/auth'
 import { useRouter } from 'vue-router'
 import { GameName, saveScore } from '@/utils/requests.js'
+import Navigation from './Navigation.vue'
 
 const icons = ['φ', 'Ψ', 'λ', 'π', 'ξ', 'Ω', 'Σ', 'θ', 'Δ']
 const cards = ref([])
@@ -17,9 +18,11 @@ let nbFlipped = 0
 const authStore = useAuthStore()
 const router = useRouter()
 
+const gameStarted = ref(false)
 const gameOver = ref(false)
 
 const restartGame = () => {
+  gameStarted.value = true
   gameOver.value = false
   score = 0
   nbFlipped = 0
@@ -29,10 +32,8 @@ const restartGame = () => {
   generateCards()
 }
 
-
 onMounted(async () => {
   await authStore.fetchUser()
-  console.log('User loaded:', authStore.user)
   if (!authStore.user) {
     router.push('/login')
     return
@@ -107,6 +108,7 @@ const resetTurn = () => {
 const gameEnd = async () => {
   await saveScore(GameName.MEMORY, score, authStore.user.id)
   gameOver.value = true
+  gameStarted.value = false
 }
 
 onMounted(() => {
@@ -117,11 +119,15 @@ onMounted(() => {
 </script>
 
 <template>
+  <Navigation v-if="!gameStarted" :gameName="GameName.MEMORY" :modeId="false"/>
   <div class="memory">
     <h1>Memory Game</h1>
-    <h2>Score: {{ score }}</h2>
+    <p v-if="!gameStarted"> Match all pairs of symbols by flipping cards two at a time. The fewer attempts you make, the higher your score!</p>
+    <button v-if="!gameStarted" @click="restartGame" class="btn-start">Start</button><br>
 
-    <div v-if="!gameOver" class="grid">
+    <h2 v-if="gameStarted || gameOver"> Score: {{ score }}</h2>
+
+    <div v-if="gameStarted && !gameOver" class="grid">
       <div
         v-for="card in cards"
         :key="card.id"
@@ -133,7 +139,7 @@ onMounted(() => {
       </div>
     </div>
 
-    <div v-if="gameOver">
+    <div v-if="!gameStarted && gameOver">
       <div class="grid heatmap">
         <div
           v-for="card in cards"
@@ -144,7 +150,6 @@ onMounted(() => {
           {{ card.icon }}
         </div>
       </div>
-      <button @click="restartGame" class="restart-btn">Restart</button>
     </div>
   </div>
 </template>
@@ -155,9 +160,33 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  gap: 10px;
   font-family: Arial, sans-serif;
+  text-align: center;
+  margin-inline: auto;
+  max-width: 400px;
   padding: 20px;
+}
+
+.btn-start {
+  background: #007acc;
+  color: white;
+  border: none;
+  padding: 15px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+  width: 300px;
+  font-size: 1.4rem;
+  margin-top: 10px;
+}
+
+.btn-start:hover {
+  background: #005f99;
+}
+
+.start-btn:hover {
+  background: #005f99;
 }
 
 h1 {
@@ -168,6 +197,11 @@ h2 {
   margin-top: 0.5rem;
   margin-bottom: 1rem;
   font-size: 1.6rem;
+}
+
+p {
+  font-size: 1.3rem;
+  margin-bottom: 15px;
 }
 
 .grid {
@@ -218,21 +252,5 @@ h2 {
 
 .heatmap-card {
   cursor: default;
-}
-
-.restart-btn {
-  margin-top: 1rem;
-  padding: 10px 20px;
-  font-size: 1.2rem;
-  background-color: #007acc;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.restart-btn:hover {
-  background-color: #005f99;
 }
 </style>

@@ -12,6 +12,9 @@ import SnakeGame from '@/views/SnakeGame.vue'
 import SnakeLeaderboard from '@/views/SnakeLeaderboard.vue'
 import TypingGame from '@/views/TypingGame.vue'
 import TypingLeaderboard from '@/views/TypingLeaderboard.vue'
+import RunnerGame from '@/views/RunnerGameView.vue'
+import RunnerLeaderboard from '@/views/RunnerLeaderboard.vue'
+import GlobalLeaderboardView from '@/views/GlobalLeaderboardView.vue'
 
 const routes = [
   {
@@ -38,6 +41,11 @@ const routes = [
     path: '/games/memory',
     name: 'memory',
     component: MemoryGameView,
+  },
+  {
+    path: '/games/leaderboard',
+    name: 'leaderboard',
+    component: GlobalLeaderboardView,
   },
   {
     path: '/games/leaderboard/memory',
@@ -83,6 +91,16 @@ const routes = [
     path: '/games/leaderboard/typing',
     name: 'typing-leaderboard',
     component: TypingLeaderboard,
+  },
+  {
+    path: '/games/runner',
+    name: 'runner',
+    component: RunnerGame,
+  },
+  {
+    path: '/games/leaderboard/runner',
+    name: 'runner-leaderboard',
+    component: RunnerLeaderboard,
   },
 ]
 

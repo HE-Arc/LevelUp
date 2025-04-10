@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue'
 import { GameName, saveScore } from '@/utils/requests.js'
 import { useAuthStore } from '@/services/auth.js'
 import { useRouter } from 'vue-router'
+import Navigation from './Navigation.vue'
 
 const timeLeft = ref(10)
 const nbClick = ref(0)
@@ -10,7 +11,7 @@ const gameRunning = ref(false)
 let timer = null
 
 const startButtonShow = ref(true)
-const timeToShowStartButton = ref(13)
+const timeToShowStartButton = ref(11)
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -25,7 +26,7 @@ onMounted(async () => {
 const startGame = () => {
   nbClick.value = 0
   timeLeft.value = 10
-  timeToShowStartButton.value = 13
+  timeToShowStartButton.value = 11
   gameRunning.value = true
   startButtonShow.value = false
 
@@ -44,7 +45,11 @@ const startGame = () => {
   }, 1000)
 }
 
-const incrementScore = () => {
+const incrementScore = (event) => {
+  if (event.pointerId === -1) {
+    // If the player "clicked" with the enter key, ignore it
+    return;
+  }
   if (gameRunning.value) {
     nbClick.value++
   }
@@ -56,10 +61,11 @@ const gameEnd = async () => {
 </script>
 
 <template>
+  <Navigation :gameName="GameName.CLICKSPEED" :modeId="false"/>
   <div class="game-container">
     <h1>Click Speed Game</h1>
     <p v-if="!gameRunning">Press “Start” and click as much as you can in 10 seconds!</p>
-    <p v-else>Time left : {{ timeLeft }}s</p>
+    <h2 v-else>Time left : {{ timeLeft }}s</h2>
 
     <button class="counter" v-if="gameRunning" @click="incrementScore">{{ nbClick }}</button>
 
@@ -80,6 +86,12 @@ const gameEnd = async () => {
 h1 {
   color: #007acc;
   margin-bottom: 20px;
+}
+
+h2 {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.6rem;
 }
 
 p {
