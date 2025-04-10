@@ -4,6 +4,7 @@ import { useAuthStore } from '@/services/auth.js'
 import { useRouter } from 'vue-router'
 import { wordList } from '@/utils/wordList.js'
 import { GameName, saveScore } from '@/utils/requests.js'
+import Navigation from '@/views/Navigation.vue'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -80,7 +81,7 @@ const startGame = () => {
 
 const checkWord = () => {
   const currentWord = currentLine.value[currentWordIndex.value]
-  const isCorrect = inputText.value.trim() === currentWord
+  const isCorrect = inputText.value.trim().toLowerCase() === currentWord.toLowerCase()
 
   wordStatus.value[currentWordIndex.value] = isCorrect ? 'correct' : 'wrong'
 
@@ -151,9 +152,9 @@ onUnmounted(() => {
 </script>
 
 <template>
+  <Navigation v-if="!gameStarted" :gameName="GameName.TYPING" :modeId="false"/>
   <div class="typing-game">
     <h1>Typing Game</h1>
-
     <div v-if="!gameOver" class="game-container">
       <div class="game-header">
         <div class="timer">Time: {{ timeLeft }}s</div>
