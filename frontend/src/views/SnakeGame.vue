@@ -83,6 +83,10 @@ const handleKeydown = (event) => {
     s: { x: 0, y: 1 },
     a: { x: -1, y: 0 },
     d: { x: 1, y: 0 },
+    arrowup: { x: 0, y: -1 },
+    arrowdown: { x: 0, y: 1 },
+    arrowleft: { x: -1, y: 0 },
+    arrowright: { x: 1, y: 0 },
   }
   let key = event.key.toLowerCase()
   if (keyMap[key]) {
@@ -145,7 +149,7 @@ onUnmounted(() => {
     <h2 v-if="gameOver">Final score: {{ score }}</h2>
 
     <div v-if="!gameStarted" class="start-screen">
-      <p class="description">Move the snake using WASD keys or the arrow buttons below.</p>
+      <p class="description">Move the snake using WASD keys or the arrow keys.</p>
       <button @click="startGame" class="start-button">Start Game</button>
     </div>
 

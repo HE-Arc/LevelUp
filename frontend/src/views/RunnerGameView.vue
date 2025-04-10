@@ -100,8 +100,8 @@ const gameEnd = async () => {
 
 const handleKeydown = (event) => {
   if (!gameStarted.value) return
-  if (event.key === 'ArrowLeft') movePlayer(-1)
-  if (event.key === 'ArrowRight') movePlayer(1)
+  if (event.key === 'ArrowLeft' || event.key.toLowerCase() === 'a') movePlayer(-1)
+  if (event.key === 'ArrowRight' || event.key.toLowerCase() === 'd') movePlayer(1)
 }
 
 onMounted(async () => {
@@ -127,7 +127,7 @@ onUnmounted(() => {
     <h2 v-if="gameOver">Final score: {{ score }}</h2>
 
     <div v-if="!gameStarted" class="start-screen">
-      <p>Move the player using the arrow keys.</p>
+      <p class="description">Move the player using WASD keys or the arrow keys.</p>
       <button @click="startGame" class="start-button">Start Game</button>
     </div>
 
@@ -182,7 +182,7 @@ h2 {
 }
 
 .cell {
-  border: 1px solid #91acc2;
+  border-inline: 1px solid #91acc2;
   background-color: white;
 }
 
@@ -192,6 +192,11 @@ h2 {
 
 .player {
   background-color: #007acc;
+}
+
+.description {
+  margin-top: 10px;
+  font-size: 1.2rem;
 }
 
 button {
