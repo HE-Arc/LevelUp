@@ -18,7 +18,7 @@ const authStore = useAuthStore()
 const router = useRouter()
 
 const cellSize = computed(() => {
-  return Math.min(Math.min(window.innerWidth * 0.9, window.innerHeight * 0.9) / tileCount - 2, 40)
+  return Math.min(Math.min(window.innerWidth * 0.9, window.innerHeight * 0.9) / tileCount - 2, 30)
 })
 
 const moveSnake = () => {

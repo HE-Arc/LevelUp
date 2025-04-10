@@ -10,6 +10,8 @@ import ReflexGameView from '@/views/ReflexGameView.vue'
 import ReflexLeaderboard from '@/views/ReflexLeaderboard.vue'
 import SnakeGame from '@/views/SnakeGame.vue'
 import SnakeLeaderboard from '@/views/SnakeLeaderboard.vue'
+import TypingGame from '@/views/TypingGame.vue'
+import TypingLeaderboard from '@/views/TypingLeaderboard.vue'
 
 const routes = [
   {
@@ -71,6 +73,16 @@ const routes = [
     path: '/games/leaderboard/snake',
     name: 'snake-leaderboard',
     component: SnakeLeaderboard,
+  },
+  {
+    path: '/games/typing',
+    name: 'typing',
+    component: TypingGame,
+  },
+  {
+    path: '/games/leaderboard/typing',
+    name: 'typing-leaderboard',
+    component: TypingLeaderboard,
   },
 ]
 
