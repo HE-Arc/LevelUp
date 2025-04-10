@@ -1,12 +1,18 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import LeaderboardView from '@/views/LeaderboardView.vue';
+import { useAuthStore } from '../services/auth';
 import axios from 'axios'
 import { API_BASE_URL } from '@/config.js'
 
+const authStore = useAuthStore();
 const globalPlayers = ref([]);
 
 onMounted(async () => {
+  await authStore.fetchUser()
+  if (!authStore.user) {
+    router.push('/login')
+  }
   try {
     const res = await axios.get(`${API_BASE_URL}/rank_score_leaderboard`)
     const leaderboard = res.data;
