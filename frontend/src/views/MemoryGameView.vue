@@ -164,7 +164,6 @@ onMounted(() => {
   font-family: Arial, sans-serif;
   text-align: center;
   margin-inline: auto;
-  max-width: 400px;
   padding: 20px;
 }
 
