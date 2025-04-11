@@ -15,5 +15,5 @@ onMounted(async () => {
 </script>
 
 <template>
-  <LeaderboardView title="Typing Game" :players="typingPlayers" />
+  <LeaderboardView title="Typing" :game="GameName.TYPING" :players="typingPlayers" />
 </template>
