@@ -1,38 +1,38 @@
 <script setup>
 const team = [
   {
-    avatar: '/public/team_avatars/Mael.webp',
+    avatar: new URL('/team_avatars/Mael.webp', import.meta.url).href,
     lastName: 'Brandt',
     firstName: 'Maël',
     githubName: 'MaelBrandt',
   },
   {
-    avatar: '/public/team_avatars/Noa.webp',
+    avatar: new URL('/team_avatars/Noa.webp', import.meta.url).href,
     lastName: 'Devanthéry',
     firstName: 'Noa',
     githubName: 'noa-devv',
   },
   {
-    avatar: '/public/team_avatars/Lorenzo.webp',
+    avatar: new URL('/team_avatars/Lorenzo.webp', import.meta.url).href,
     lastName: 'Di Benedetto',
     firstName: 'Lorenzo',
     githubName: 'lorenzodibenede',
   },
   {
-    avatar: '/public/team_avatars/Arnaud.webp',
+    avatar: new URL('/team_avatars/Arnaud.webp', import.meta.url).href,
     lastName: 'Maître',
     firstName: 'Arnaud',
     githubName: 'Arnaud-Maitre',
   },
-];
-const sus = Math.floor(Math.random() * team.length);
+]
+const sus = Math.floor(Math.random() * team.length)
 </script>
 <template>
   <div class="container">
     <h1>About Level-Up</h1>
     <p>
-      Level-Up is a web application that allows users to play a collection of mini-games and
-      compare their scores to others.
+      Level-Up is a web application that allows users to play a collection of mini-games and compare
+      their scores to others.
     </p>
     <p>
       The app has been developed in 2025 by a team of four students at HE-Arc, as part of a 3rd year
@@ -49,20 +49,28 @@ const sus = Math.floor(Math.random() * team.length);
             width="140px"
             height="160px"
           />
-          <img v-if="i === sus && typeof $route.query.sus !== 'undefined'" class="team-member-avatar-knife" src="/public/team_avatars/Knife.webp" />
+          <img
+            v-if="i === sus && typeof $route.query.sus !== 'undefined'"
+            class="team-member-avatar-knife"
+            src="/public/team_avatars/Knife.webp"
+          />
         </div>
         <div class="team-member-name">
           <b>{{ teamMember.lastName }}</b>
           <br />{{ teamMember.firstName }}
         </div>
         <div class="team-member-contact">
-          <a :href="'https://github.com/' + teamMember.githubName" target="_blank">@{{ teamMember.githubName }}</a>
+          <a :href="'https://github.com/' + teamMember.githubName" target="_blank">
+            @{{ teamMember.githubName }}
+          </a>
         </div>
       </div>
     </div>
     <img class="logo" src="/public/logo_he_arc.jpg" alt="he-arc logo" />
-    <a v-if="typeof $route.query.sus === 'undefined'" href="?sus"><img class="sus" height="20" :src="team[sus].avatar" alt="he-arc logo" /></a>
   </div>
+  <a v-if="typeof $route.query.sus === 'undefined'" class="sus" href="?sus">
+    <img height="20" :src="team[sus].avatar" alt="easter egg" />
+  </a>
 </template>
 
 <style>
@@ -130,7 +138,7 @@ h2 {
 }
 
 .sus {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
 }
