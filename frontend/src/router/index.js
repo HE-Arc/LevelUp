@@ -15,6 +15,7 @@ import TypingLeaderboard from '@/views/TypingLeaderboard.vue'
 import RunnerGame from '@/views/RunnerGameView.vue'
 import RunnerLeaderboard from '@/views/RunnerLeaderboard.vue'
 import GlobalLeaderboardView from '@/views/GlobalLeaderboardView.vue'
+import AboutView from '@/views/AboutView.vue'
 
 const routes = [
   {
@@ -102,6 +103,11 @@ const routes = [
     name: 'runner-leaderboard',
     component: RunnerLeaderboard,
   },
+  {
+    path: '/about',
+    name: 'about',
+    component: AboutView,
+  }
 ]
 
 const router = createRouter({
