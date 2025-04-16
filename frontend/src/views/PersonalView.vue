@@ -40,6 +40,9 @@
         infoVisible: false,
         editUsernameActive: false,
         editMailActive: false,
+        oldPassword: '',
+        newPassword: '',
+        message: '',
       };
     },
     methods: {
@@ -54,6 +57,18 @@
       },
       activateMailEdit() {
         this.editMailActive = !this.editMailActive;
+      },
+      async changePassword() {
+        try {
+          const response = await this.$axios.post('/api/edit_password/', {
+            old_password: this.oldPassword,
+            new_password: this.newPassword
+          });
+          print(response),
+          this.message = response.data.detail;
+        } catch (error) {
+          this.message = error.response.data.detail || 'Error changing password.';
+        }
       }
     },
   };
@@ -87,7 +102,7 @@
         </tbody>
       </table>
     </div>
-    <button @click="toggleInfoVisibility">Edit Profile</button>
+    <button @click="toggleInfoVisibility">My Profile</button>
     <div v-if="infoVisible" class="content">
       <table>
         <tbody>
@@ -95,7 +110,7 @@
             <td>Username :</td>
             <td>{{ authStore.user?.username }}</td>
             <td>
-              <button class="small-btn" title="edit">
+              <button class="small-btn" title="edit username">
                 <i class="fas fa-edit"></i>
               </button>
             </td>
@@ -104,11 +119,12 @@
             <td>email :</td>
             <td>{{ authStore.user?.email }}</td>
             <td>
-              <button class="small-btn" title="edit">
+              <button class="small-btn" title="Edit email address">
                 <i class="fas fa-edit"></i>
               </button>
             </td>
           </tr>
+
         </tbody>
       </table>
     </div>

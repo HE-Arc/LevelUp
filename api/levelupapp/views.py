@@ -1,6 +1,6 @@
 import json
 
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.http import JsonResponse
@@ -71,6 +71,30 @@ def register(request):
         return JsonResponse({"error": errors}, status=400)
 
 
+@require_http_methods(["POST"])
+def edit_password_view(request):
+    user_id = request.GET.get("user_id")
+    JsonResponse({id: user_id})
+    #try:
+    #    user = User.objects.get(id=user_id)
+    #except User.DoesNotExist:
+    #    return JsonResponse({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+#
+    #try:
+    #    data = json.loads(request.body.decode("utf-8"))
+    #    old_password = data.get("old_password")
+    #    new_password = data.get("new_password")
+    #except json.JSONDecodeError:
+    #    return JsonResponse({"success": False, "message": "Invalid JSON"}, status=400)
+#
+    #if not user.check_password(old_password):
+    #    return JsonResponse({"detail": "Old password is incorrect."}, status=status.HTTP_400_BAD_REQUEST)
+    #user.set_password(new_password)
+    #user.save()
+    #update_session_auth_hash(request, user)  # Keeps the user logged in
+    #return JsonResponse({"detail": "Password changed successfully."}, status=status.HTTP_200_OK)
+
+
 @api_view(["POST"])
 def save_score(request):
     data = request.data
@@ -97,7 +121,7 @@ def leaderboard(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def rank_score_sum(request) -> Response(dict[str, int]):
     """
     Returns the total rank score for the user_id specified GET parameters.
@@ -122,8 +146,8 @@ def rank_score_sum(request) -> Response(dict[str, int]):
     return Response(
         {
             "rank_score_sum": rank_score_sum,
-        }
-        , status=status.HTTP_200_OK
+        },
+        status=status.HTTP_200_OK,
     )
 
 
@@ -176,9 +200,9 @@ def user_full_score(request) -> Response(dict[str, dict[str, int | float]]):
             "rank_avg": rank_sum / nb_games if nb_games > 0 else 0,
             "rank_scores": rank_scores,
             "rank_score_sum": rank_score_sum,
-            "rank_score_rank": ScoreUtils.rank_score_rank(user)
-        }
-        , status=status.HTTP_200_OK
+            "rank_score_rank": ScoreUtils.rank_score_rank(user),
+        },
+        status=status.HTTP_200_OK,
     )
 
 
@@ -188,10 +212,7 @@ def rank_score_leaderboard(request):
 
     rsl = [{"username": entry[0].username, "rank_score": entry[1]} for entry in rsl]
 
-    return Response(
-        rsl
-        , status=status.HTTP_200_OK
-    )
+    return Response(rsl, status=status.HTTP_200_OK)
 
 
 @api_view(["GET"])
@@ -203,12 +224,8 @@ def rank_score_rank(request):
     except User.DoesNotExist:
         return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
-    return Response(
-        {
-            "rank_score_rank": ScoreUtils.rank_score_rank(user)
-        }
-        , status=status.HTTP_200_OK
-    )
+    return Response({"rank_score_rank": ScoreUtils.rank_score_rank(user)}, status=status.HTTP_200_OK)
+
 
 @api_view(["GET"])
 def records(request):
@@ -220,6 +237,7 @@ def records(request):
 
     serializer = ScoreSerializer(scores, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class GameViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Game.objects.all()
