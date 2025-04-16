@@ -1,25 +1,25 @@
 <script setup>
 const team = [
   {
-    avatar: new URL('/team_avatars/Mael.webp', import.meta.url).href,
+    avatar: new URL('/src/assets/team_avatars/Mael.webp', import.meta.url).href,
     lastName: 'Brandt',
     firstName: 'Maël',
     githubName: 'MaelBrandt',
   },
   {
-    avatar: new URL('/team_avatars/Noa.webp', import.meta.url).href,
+    avatar: new URL('/src/assets/team_avatars/Noa.webp', import.meta.url).href,
     lastName: 'Devanthéry',
     firstName: 'Noa',
     githubName: 'noa-devv',
   },
   {
-    avatar: new URL('/team_avatars/Lorenzo.webp', import.meta.url).href,
+    avatar: new URL('/src/assets/team_avatars/Lorenzo.webp', import.meta.url).href,
     lastName: 'Di Benedetto',
     firstName: 'Lorenzo',
     githubName: 'lorenzodibenede',
   },
   {
-    avatar: new URL('/team_avatars/Arnaud.webp', import.meta.url).href,
+    avatar: new URL('/src/assets/team_avatars/Arnaud.webp', import.meta.url).href,
     lastName: 'Maître',
     firstName: 'Arnaud',
     githubName: 'Arnaud-Maitre',
@@ -52,7 +52,7 @@ const sus = Math.floor(Math.random() * team.length)
           <img
             v-if="i === sus && typeof $route.query.sus !== 'undefined'"
             class="team-member-avatar-knife"
-            src="/public/team_avatars/Knife.webp"
+            src="/src/assets/team_avatars/Knife.webp"
           />
         </div>
         <div class="team-member-name">
@@ -66,7 +66,7 @@ const sus = Math.floor(Math.random() * team.length)
         </div>
       </div>
     </div>
-    <img class="logo" src="/public/logo_he_arc.jpg" alt="he-arc logo" />
+    <img class="logo" src="/src/assets/logo_he_arc.jpg" alt="he-arc logo" />
   </div>
   <a v-if="typeof $route.query.sus === 'undefined'" class="sus" href="?sus">
     <img height="20" :src="team[sus].avatar" alt="easter egg" />

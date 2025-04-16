@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, computed } from 'vue'
+import { computed } from 'vue'
 import { useAuthStore } from '@/services/auth'
 import { Line } from 'vue-chartjs'
 // eslint-disable-next-line no-unused-vars
