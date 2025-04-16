@@ -110,18 +110,18 @@
             <td>Username :</td>
             <td>{{ authStore.user?.username }}</td>
             <td>
-              <button class="small-btn" title="edit username">
+              <!-- button class="small-btn" title="edit username">
                 <i class="fas fa-edit"></i>
-              </button>
+              </button -->
             </td>
           </tr>
           <tr>
             <td>email :</td>
             <td>{{ authStore.user?.email }}</td>
             <td>
-              <button class="small-btn" title="Edit email address">
+              <!-- button class="small-btn" title="Edit email address">
                 <i class="fas fa-edit"></i>
-              </button>
+              </button -->
             </td>
           </tr>
 
