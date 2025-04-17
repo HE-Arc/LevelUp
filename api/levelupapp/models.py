@@ -49,6 +49,9 @@ class Game(models.Model):
             return [score.user for score in leaderboard].index(user) + 1
         return None
 
+    def get_user_highscore(self, user) -> int | None:
+        return self.score_set.filter(user=user).order_by("-points").first()
+
 
 class Score(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
