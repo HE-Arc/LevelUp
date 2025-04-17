@@ -84,20 +84,26 @@
         <thead>
           <tr>
             <th></th>
-            <th class="number-col">Ranks</th>
+            <th class="number-col">Rank</th>
             <th class="number-col">Score</th>
+            <th class="number-col">Rank scores</th>
           </tr>
         </thead>
         <tbody>
           <tr class="global-row">
             <td>Global</td>
             <td class="number-col">{{ userFullScore["rank_score_rank"] }}</td>
+            <td class="number-col">-</td>
             <td class="number-col">{{ Math.round(userFullScore["rank_score_sum"]) }}</td>
+          </tr>
+          <tr>
+            <td colspan="4"><hr></td>
           </tr>
           <tr v-for="game in games">
             <td>{{ game.name }}</td>
             <td class="number-col">{{ userFullScore["ranks"][game.name] }}</td>
             <td class="number-col">{{ userFullScore["scores"][game.name] }}</td>
+            <td class="number-col">{{ Math.round(userFullScore["rank_scores"][game.name]) }}</td>
           </tr>
         </tbody>
       </table>
@@ -116,7 +122,7 @@
             </td>
           </tr>
           <tr>
-            <td>email :</td>
+            <td>Email :</td>
             <td>{{ authStore.user?.email }}</td>
             <td>
               <!-- button class="small-btn" title="Edit email address">
