@@ -170,7 +170,8 @@ def user_full_score(request) -> Response(dict[str, dict[str, int | float]]):
 
     scores = {}
     for game in Game.objects.all():
-        scores[game.name] = game.get_user_highscore(user).points
+        highscore = game.get_user_highscore(user)
+        scores[game.name] = highscore.points if highscore is not None else "-"
 
     ranks = {}
     rank_sum = 0
@@ -181,15 +182,15 @@ def user_full_score(request) -> Response(dict[str, dict[str, int | float]]):
     for game in Game.objects.all():
         rank = game.get_user_rank(user)
         if rank is None:
-            continue
-
-        score = ScoreUtils.rank_score(rank)
+            score = 0
+            rank = "-"
+        else:
+            score = ScoreUtils.rank_score(rank)
+            rank_sum += rank
+            rank_score_sum += score
 
         ranks[game.name] = rank
         rank_scores[game.name] = score
-
-        rank_sum += rank
-        rank_score_sum += score
 
         nb_games += 1
 

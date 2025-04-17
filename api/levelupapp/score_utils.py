@@ -31,4 +31,4 @@ class ScoreUtils:
         users = [row[0] for row in rank_score_leaderboard]
         if user in users:
             return users.index(user) + 1
-        return None
+        return 0
