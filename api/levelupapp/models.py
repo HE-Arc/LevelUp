@@ -19,9 +19,14 @@ class Game(models.Model):
         )
 
         top_scores = [
-            self.score_set.filter(user=score["user"], points=score["max_points"]).first()
+            self.score_set
+            .filter(user=score["user"], points=score["max_points"])
+            .order_by("date")
+            .first()
             for score in best_scores
         ]
+
+        top_scores.sort(key=lambda s: (-s.points, s.date))
 
         return top_scores
 
