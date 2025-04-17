@@ -18,7 +18,7 @@ const props = defineProps({
 })
 
 const authStore = useAuthStore()
-const currentUser = authStore.user.username
+const currentUser = authStore.user?.username
 
 const userEntry = computed(() => props.players.find(player => player.username === currentUser))
 

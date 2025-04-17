@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useAuthStore } from '../services/auth'
-import { useRouter } from 'vue-router'
 import axios from 'axios'
 import { API_BASE_URL } from '@/config'
 import { RouterLink } from 'vue-router'
@@ -12,7 +11,6 @@ const games_loading = ref(true)
 const userRanks = ref({})
 
 const authStore = useAuthStore()
-const router = useRouter()
 
 
 
@@ -43,10 +41,6 @@ const fetchUserRanks = async () => {
 
 onMounted(async () => {
   await authStore.fetchUser()
-  if (!authStore.user) {
-    router.push('/login')
-    return
-  }
   fetchGames()
 })
 </script>

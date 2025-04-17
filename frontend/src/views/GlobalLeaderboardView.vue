@@ -10,9 +10,6 @@ const globalPlayers = ref([]);
 
 onMounted(async () => {
   await authStore.fetchUser()
-  if (!authStore.user) {
-    router.push('/login')
-  }
   try {
     const res = await axios.get(`${API_BASE_URL}/rank_score_leaderboard`)
     const leaderboard = res.data;
