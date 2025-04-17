@@ -7,6 +7,7 @@ export const GameName = {
   REFLEX: "Reflex",
   SNAKE: "Snake",
   RUNNER: "Runner",
+  TYPING: "Typing",
 }
 
 export async function saveScore(gameName, score, userId) {
@@ -29,7 +30,6 @@ export async function saveScore(gameName, score, userId) {
     }
 
     const data = await response.json()
-
   } catch (error) {
     console.error('Error while sending request :', error)
   }
@@ -47,7 +47,6 @@ export async function getLeaderboard(gameName) {
     const text = await response.text()
 
     const data = JSON.parse(text)
-
     return data
   } catch (error) {
     console.error('Error while fetching leaderboard:', error)

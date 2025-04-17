@@ -17,8 +17,7 @@ from .score_utils import ScoreUtils
 from .serializers import ScoreSerializer, GameSerializer
 
 
-@ensure_csrf_cookie
-@require_http_methods(["GET"])
+@api_view(['GET'])
 def set_csrf_token(request):
     """
     We set the CSRF cookie on the frontend.
@@ -26,10 +25,10 @@ def set_csrf_token(request):
     return JsonResponse({"csrfToken": request.META.get("CSRF_COOKIE", "")})
 
 
-@require_http_methods(["POST"])
+@api_view(['POST'])
 def login_view(request):
     try:
-        data = json.loads(request.body.decode("utf-8"))
+        data = request.data
         identifier = data.get("email")  # Peut être un email ou un username
         password = data["password"]
     except json.JSONDecodeError:
@@ -48,16 +47,17 @@ def logout_view(request):
     return JsonResponse({"message": "Logged out"})
 
 
-@require_http_methods(["GET"])
+#api_view ne fonctionnait pas car on utilise pas l'authentification de base de DRF
+@require_http_methods(['GET'])
 def user(request):
     if request.user.is_authenticated:
         return JsonResponse({"id": request.user.id, "username": request.user.username, "email": request.user.email})
     return JsonResponse({"message": "Not logged in"}, status=401)
 
 
-@require_http_methods(["POST"])
+@api_view(['POST'])
 def register(request):
-    data = json.loads(request.body.decode("utf-8"))
+    data = request.data
     form = CreateUserForm(data)
 
     if form.is_valid():

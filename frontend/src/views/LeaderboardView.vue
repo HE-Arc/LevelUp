@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, computed } from 'vue'
+import { computed } from 'vue'
 import { useAuthStore } from '@/services/auth'
 import { Line } from 'vue-chartjs'
 // eslint-disable-next-line no-unused-vars
@@ -20,9 +20,7 @@ const props = defineProps({
 const authStore = useAuthStore()
 const currentUser = authStore.user.username
 
-const sortedPlayers = computed(() => props.players.slice(0, 1))
 const userEntry = computed(() => props.players.find(player => player.username === currentUser))
-const isUserInTop10 = computed(() => sortedPlayers.value.some(player => player.username === currentUser))
 
 const recordChartData = computed(() => {
   return {
@@ -111,7 +109,7 @@ const recordChartOptions = {
     <div>
       <table>
         <tbody>
-          <tr v-if="userEntry && !isUserInTop10" class="highlight-user">
+          <tr v-if="userEntry && props.players.length >= 10" class="highlight-user">
             <td>#{{ props.players.indexOf(userEntry) + 1 }}</td>
             <td>{{ userEntry.username }}</td>
             <td>{{ userEntry.points }}</td>
