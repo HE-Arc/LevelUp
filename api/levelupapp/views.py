@@ -169,8 +169,8 @@ def user_full_score(request) -> Response(dict[str, dict[str, int | float]]):
         return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
     scores = {}
-    for score in Score.objects.filter(user_id=user_id):
-        scores[score.game.name] = score.points
+    for game in Game.objects.all():
+        scores[game.name] = game.get_user_highscore(user).points
 
     ranks = {}
     rank_sum = 0
